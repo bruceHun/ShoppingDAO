@@ -8,6 +8,6 @@ public interface ProductDAO {
 	public int add(Product p);
 	public void update(Product p);
 	public void delete(Product p);
-	public Product searchbyID(int ProductID);
+	public Product searchbyID(Integer ProductID);
 	public ArrayList<Product> showAll();
 }

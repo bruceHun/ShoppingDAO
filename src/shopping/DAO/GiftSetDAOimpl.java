@@ -95,7 +95,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 	}
 
 	@Override
-	public GiftSet searchbyID(int GiftSetID) {
+	public GiftSet searchbyID(Integer GiftSetID) {
 		String sql = "SELECT * FROM GiftSets WHERE GiftSetID = ?";
 		GiftSet g = new GiftSet();
 		try (Connection conn = MySQLconn.getConnection();

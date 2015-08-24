@@ -97,7 +97,7 @@ public class ProductDAOimpl implements ProductDAO{
 	}
 
 	@Override
-	public Product searchbyID(int ProductID) {
+	public Product searchbyID(Integer ProductID) {
 		String sql = "SELECT * FROM Products WHERE ProductID = ?";
 		Product p = new Product();
 		try (Connection conn = MySQLconn.getConnection();
