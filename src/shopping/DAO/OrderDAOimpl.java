@@ -12,9 +12,9 @@ import shopping.Class.Order;
 
 public class OrderDAOimpl implements OrderDAO{
 
-	private int IdCheck() {		
+	private Integer IdCheck() {		
 		String sql = "SELECT MAX(OrderID) FROM Orders";
-		int ID = 0;
+		Integer ID = 0;
 		try(Connection conn = MySQLconn.getConnection();
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)){
@@ -29,7 +29,7 @@ public class OrderDAOimpl implements OrderDAO{
 	}
 	
 	@Override
-	public int add(Order o) {
+	public Integer add(Order o) {
 		String sql = "INSERT INTO Orders VALUES(null,?,?,?,?,?)";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -85,7 +85,7 @@ public class OrderDAOimpl implements OrderDAO{
 	}
 
 	@Override
-	public Order searchbyID(int OrderID) {
+	public Order searchbyID(Integer OrderID) {
 		String sql = "SELECT * FROM Orders WHERE OrderID = ?";
 		Order o = new Order();
 		try (Connection conn = MySQLconn.getConnection();

@@ -1,18 +1,19 @@
 package shopping.Class;
 
 public class Inventory {
-	private int StockNumber;
-	private int ProductID;
-	private float Cost;
-	private int UnitsInStock;
-	private int UnitsOnOrder;
-	private int SaftyStock;
+	private Integer StockNumber;
+	private Integer ProductID;
+	private Float Cost;
+	private Integer UnitsInStock;
+	private Integer UnitsOnOrder;
+	private Integer SaftyStock;
 	
 	public Inventory(){
 		
 	}
-
-	public Inventory(int stockNumber, int productID, float cost, int unitsInStock, int unitsOnOrder, int saftyStock) {
+	
+	public Inventory(Integer stockNumber, Integer productID, Float cost, Integer unitsInStock, Integer unitsOnOrder,
+			Integer saftyStock) {
 		super();
 		StockNumber = stockNumber;
 		ProductID = productID;
@@ -22,54 +23,54 @@ public class Inventory {
 		SaftyStock = saftyStock;
 	}
 
-	public int getStockNumber() {
+	public Integer getStockNumber() {
 		return StockNumber;
 	}
 
-	public void setStockNumber(int stockNumber) {
+	public void setStockNumber(Integer stockNumber) {
 		StockNumber = stockNumber;
 	}
 
-	public int getProductID() {
+	public Integer getProductID() {
 		return ProductID;
 	}
 
-	public void setProductID(int productID) {
+	public void setProductID(Integer productID) {
 		ProductID = productID;
 	}
 
-	public float getCost() {
+	public Float getCost() {
 		return Cost;
 	}
 
-	public void setCost(float cost) {
+	public void setCost(Float cost) {
 		Cost = cost;
 	}
 
-	public int getUnitsInStock() {
+	public Integer getUnitsInStock() {
 		return UnitsInStock;
 	}
 
-	public void setUnitsInStock(int unitsInStock) {
+	public void setUnitsInStock(Integer unitsInStock) {
 		UnitsInStock = unitsInStock;
 	}
 
-	public int getUnitsOnOrder() {
+	public Integer getUnitsOnOrder() {
 		return UnitsOnOrder;
 	}
 
-	public void setUnitsOnOrder(int unitsOnOrder) {
+	public void setUnitsOnOrder(Integer unitsOnOrder) {
 		UnitsOnOrder = unitsOnOrder;
 	}
 
-	public int getSaftyStock() {
+	public Integer getSaftyStock() {
 		return SaftyStock;
 	}
 
-	public void setSaftyStock(int saftyStock) {
+	public void setSaftyStock(Integer saftyStock) {
 		SaftyStock = saftyStock;
 	}
-	
+
 	@Override
 	public String toString(){
 		return "\nStackNumber: "+StockNumber

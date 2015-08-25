@@ -1,14 +1,14 @@
 package shopping.Class;
 
 public class ProductCategory {
-	private int CategoryID;
+	private Integer CategoryID;
 	private String CategoryName;
 	
 	public ProductCategory(){
 		
 	}
 
-	public ProductCategory(int categoryID, String categoryName) {
+	public ProductCategory(Integer categoryID, String categoryName) {
 		super();
 		CategoryID = categoryID;
 		CategoryName = categoryName;
@@ -18,7 +18,7 @@ public class ProductCategory {
 		return CategoryID;
 	}
 
-	public void setCategoryID(int categoryID) {
+	public void setCategoryID(Integer categoryID) {
 		CategoryID = categoryID;
 	}
 

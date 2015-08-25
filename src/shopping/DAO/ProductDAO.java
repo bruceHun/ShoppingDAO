@@ -10,4 +10,6 @@ public interface ProductDAO {
 	public void delete(Product p);
 	public Product searchbyID(Integer ProductID);
 	public ArrayList<Product> showAll();
+	public ArrayList<Product> gerRange(int offset, int count);
+	public int getSize();
 }

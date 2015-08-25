@@ -1,15 +1,15 @@
 package shopping.Class;
 
 public class SmallPic {
-	private int SmallPicID;
+	private Integer SmallPicID;
 	private String SmallPicName;
-	private int ProductID;
+	private Integer ProductID;
 	
 	public SmallPic(){
 		
 	}
 
-	public SmallPic(int smallPicID, String smallPicName, int productID) {
+	public SmallPic(Integer smallPicID, String smallPicName, Integer productID) {
 		super();
 		SmallPicID = smallPicID;
 		SmallPicName = smallPicName;
@@ -20,7 +20,7 @@ public class SmallPic {
 		return SmallPicID;
 	}
 
-	public void setSmallPicID(int smallPicID) {
+	public void setSmallPicID(Integer smallPicID) {
 		SmallPicID = smallPicID;
 	}
 
@@ -36,7 +36,7 @@ public class SmallPic {
 		return ProductID;
 	}
 
-	public void setProductID(int productID) {
+	public void setProductID(Integer productID) {
 		ProductID = productID;
 	}
 

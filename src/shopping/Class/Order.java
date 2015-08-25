@@ -1,18 +1,18 @@
 package shopping.Class;
 
 public class Order {
-	private int OrderID;
-	private int CustomerID;
+	private Integer OrderID;
+	private Integer CustomerID;
 	private String OrderDate;
 	private String ShipDate;
-	private int DiscountID;
-	private byte Canceled;
+	private Integer DiscountID;
+	private Byte Canceled;
 	
 	public Order(){
 		
 	}
 
-	public Order(int orderID, int customerID, String orderDate, String shipDate, int discountID, byte canceled) {
+	public Order(Integer orderID, Integer customerID, String orderDate, String shipDate, Integer discountID, Byte canceled) {
 		super();
 		OrderID = orderID;
 		CustomerID = customerID;
@@ -26,7 +26,7 @@ public class Order {
 		return OrderID;
 	}
 
-	public void setOrderID(int orderID) {
+	public void setOrderID(Integer orderID) {
 		OrderID = orderID;
 	}
 
@@ -34,7 +34,7 @@ public class Order {
 		return CustomerID;
 	}
 
-	public void setCustomerID(int customerID) {
+	public void setCustomerID(Integer customerID) {
 		CustomerID = customerID;
 	}
 
@@ -58,7 +58,7 @@ public class Order {
 		return DiscountID;
 	}
 
-	public void setDiscountID(int discountID) {
+	public void setDiscountID(Integer discountID) {
 		DiscountID = discountID;
 	}
 
@@ -66,7 +66,7 @@ public class Order {
 		return Canceled;
 	}
 
-	public void setCanceled(byte canceled) {
+	public void setCanceled(Byte canceled) {
 		Canceled = canceled;
 	}
 

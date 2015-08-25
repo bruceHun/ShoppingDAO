@@ -1,20 +1,20 @@
 package shopping.Class;
 
 public class OrderDetail {
-	private int ID;
-	private int OrderID;
-	private int ProductID;
-	private int GiftSetID;
-	private float SalesPrice;
-	private int Quantity;
+	private Integer ID;
+	private Integer OrderID;
+	private Integer ProductID;
+	private Integer GiftSetID;
+	private Float SalesPrice;
+	private Integer Quantity;
 	
 	public OrderDetail(){
 		
 	}
 
-	
-	
-	public OrderDetail(int iD, int orderID, int productID, int giftSetID, float salesPrice, int quantity) {
+
+	public OrderDetail(Integer iD, Integer orderID, Integer productID, Integer giftSetID, Float salesPrice,
+			Integer quantity) {
 		super();
 		ID = iD;
 		OrderID = orderID;
@@ -25,77 +25,64 @@ public class OrderDetail {
 	}
 
 
-
-	public int getID() {
+	public Integer getID() {
 		return ID;
 	}
 
 
-
-	public void setID(int iD) {
+	public void setID(Integer iD) {
 		ID = iD;
 	}
 
 
-
-	public int getOrderID() {
+	public Integer getOrderID() {
 		return OrderID;
 	}
 
 
-
-	public void setOrderID(int orderID) {
+	public void setOrderID(Integer orderID) {
 		OrderID = orderID;
 	}
 
 
-
-	public int getProductID() {
+	public Integer getProductID() {
 		return ProductID;
 	}
 
 
-
-	public void setProductID(int productID) {
+	public void setProductID(Integer productID) {
 		ProductID = productID;
 	}
 
 
-
-	public int getGiftSetID() {
+	public Integer getGiftSetID() {
 		return GiftSetID;
 	}
 
 
-
-	public void setGiftSetID(int giftSetID) {
+	public void setGiftSetID(Integer giftSetID) {
 		GiftSetID = giftSetID;
 	}
 
 
-
-	public float getSalesPrice() {
+	public Float getSalesPrice() {
 		return SalesPrice;
 	}
 
 
-
-	public void setSalesPrice(float salesPrice) {
+	public void setSalesPrice(Float salesPrice) {
 		SalesPrice = salesPrice;
 	}
 
 
-
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return Quantity;
 	}
 
 
-
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		Quantity = quantity;
 	}
-
 
 
 	@Override

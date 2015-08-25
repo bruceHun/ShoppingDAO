@@ -37,6 +37,14 @@ public class OrderDetailDAOimpl implements OrderDetailDAO{
 			pstmt.setInt(1, od.getOrderID());
 			pstmt.setInt(2, od.getProductID());
 			pstmt.setInt(3, od.getGiftSetID());
+			/*if(od.getProductID()==null){
+                 pstmt.setNull(2,java.sql.Types.INTEGER);				
+			}else{
+			pstmt.setInt(2, od.getProductID());}
+			if(od.getGiftSetID()==null){
+                 pstmt.setNull(3,java.sql.Types.INTEGER);				
+			}else{
+			pstmt.setInt(3, od.getGiftSetID());}*/
 			pstmt.setFloat(4, od.getSalesPrice());
 			pstmt.setInt(5, od.getQuantity());
 

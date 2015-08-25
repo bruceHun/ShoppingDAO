@@ -3,26 +3,25 @@ package shopping.Class;
 
 
 public class Customer {
-	private int CustomerID;
+	private Integer CustomerID;
 	private String CustomerName;
 	private String PersonalID;
-	private byte Gender;
+	private Byte Gender;
 	private String BirthDate;
 	private String Phone;
 	private String CelPhone;
 	private String Address;
 	private String Email;
 	private String CustomerType;
-	private int DiscountID;
+	private Integer DiscountID;
 	
 	public Customer() {
 		super();
 	}
 
 	
-	
-	public Customer(int customerID, String customerName, String personalID, byte gender, String birthDate, String phone,
-			String celPhone, String address, String email, String customerType, int discountID) {
+	public Customer(Integer customerID, String customerName, String personalID, Byte gender, String birthDate,
+			String phone, String celPhone, String address, String email, String customerType, Integer discountID) {
 		super();
 		CustomerID = customerID;
 		CustomerName = customerName;
@@ -37,18 +36,14 @@ public class Customer {
 		DiscountID = discountID;
 	}
 
-
-
-	public int getCustomerID() {
+	public Integer getCustomerID() {
 		return CustomerID;
 	}
 
 
-
-	public void setCustomerID(int customerID) {
+	public void setCustomerID(Integer customerID) {
 		CustomerID = customerID;
 	}
-
 
 
 	public String getCustomerName() {
@@ -56,11 +51,9 @@ public class Customer {
 	}
 
 
-
 	public void setCustomerName(String customerName) {
 		CustomerName = customerName;
 	}
-
 
 
 	public String getPersonalID() {
@@ -68,23 +61,19 @@ public class Customer {
 	}
 
 
-
 	public void setPersonalID(String personalID) {
 		PersonalID = personalID;
 	}
 
 
-
-	public byte getGender() {
+	public Byte getGender() {
 		return Gender;
 	}
 
 
-
-	public void setGender(byte gender) {
+	public void setGender(Byte gender) {
 		Gender = gender;
 	}
-
 
 
 	public String getBirthDate() {
@@ -92,11 +81,9 @@ public class Customer {
 	}
 
 
-
 	public void setBirthDate(String birthDate) {
 		BirthDate = birthDate;
 	}
-
 
 
 	public String getPhone() {
@@ -104,11 +91,9 @@ public class Customer {
 	}
 
 
-
 	public void setPhone(String phone) {
 		Phone = phone;
 	}
-
 
 
 	public String getCelPhone() {
@@ -116,11 +101,9 @@ public class Customer {
 	}
 
 
-
 	public void setCelPhone(String celPhone) {
 		CelPhone = celPhone;
 	}
-
 
 
 	public String getAddress() {
@@ -128,11 +111,9 @@ public class Customer {
 	}
 
 
-
 	public void setAddress(String address) {
 		Address = address;
 	}
-
 
 
 	public String getEmail() {
@@ -140,11 +121,9 @@ public class Customer {
 	}
 
 
-
 	public void setEmail(String email) {
 		Email = email;
 	}
-
 
 
 	public String getCustomerType() {
@@ -152,23 +131,19 @@ public class Customer {
 	}
 
 
-
 	public void setCustomerType(String customerType) {
 		CustomerType = customerType;
 	}
 
 
-
-	public int getDiscountID() {
+	public Integer getDiscountID() {
 		return DiscountID;
 	}
 
 
-
-	public void setDiscountID(int discountID) {
+	public void setDiscountID(Integer discountID) {
 		DiscountID = discountID;
 	}
-
 
 
 	@Override

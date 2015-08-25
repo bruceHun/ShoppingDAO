@@ -1,16 +1,16 @@
 package shopping.Class;
 
 public class Membership {
-	private int CustomerID;
+	private Integer CustomerID;
 	private String Account;
 	private String Password;
-	private byte Membership;
+	private Byte Membership;
 	
 	public Membership(){
 		
 	}
 
-	public Membership(int customerID, String account, String password, byte membership) {
+	public Membership(Integer customerID, String account, String password, Byte membership) {
 		super();
 		CustomerID = customerID;
 		Account = account;
@@ -22,7 +22,7 @@ public class Membership {
 		return CustomerID;
 	}
 
-	public void setCustomerID(int customerID) {
+	public void setCustomerID(Integer customerID) {
 		CustomerID = customerID;
 	}
 
@@ -46,7 +46,7 @@ public class Membership {
 		return Membership;
 	}
 
-	public void setMembership(byte membership) {
+	public void setMembership(Byte membership) {
 		Membership = membership;
 	}
 

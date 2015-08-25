@@ -156,4 +156,51 @@ public class ProductDAOimpl implements ProductDAO{
 		return al;
 	}
 
+	@Override
+	public ArrayList<Product> gerRange(int offset, int count) {
+		String sql = "SELECT * FROM Products ORDER BY ProductID LIMIT ?,?";
+		ArrayList<Product> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new Product(rs.getInt(1),
+									rs.getString(2),
+									rs.getInt(3),
+									rs.getString(4),
+									rs.getString(5),
+									rs.getString(6),
+									rs.getFloat(7),
+									rs.getByte(8),
+									rs.getString(9)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+	}
+
+	@Override
+	public int getSize() {
+			String sql = "SELECT count(*) FROM Products";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
+	}
+	
+
 }
