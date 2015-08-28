@@ -12,4 +12,5 @@ public interface ProductDAO {
 	public ArrayList<Product> showAll();
 	public ArrayList<Product> gerRange(int offset, int count);
 	public int getSize();
+        public ArrayList<Product> findByName(String ProductName);
 }

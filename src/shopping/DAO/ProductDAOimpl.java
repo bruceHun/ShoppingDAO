@@ -84,7 +84,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public void delete(Product p) {
-		String sql = "DELETE FROM Product WHERE ProductID = ?";
+		String sql = "DELETE FROM Products WHERE ProductID = ?";
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, p.getProductID());
@@ -201,6 +201,38 @@ public class ProductDAOimpl implements ProductDAO{
 			}
 			return -1;
 	}
+
+    @Override
+    public ArrayList<Product> findByName(String ProductName) {
+        		String sql = "SELECT * FROM Products WHERE ProductName = ?";
+		ArrayList<Product> al = new ArrayList<>();
+                
+		try (Connection conn = MySQLconn.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			
+			pstmt.setString(1, ProductName);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				al.add(new Product(rs.getInt(1),
+									rs.getString(2),
+									rs.getInt(3),
+									rs.getString(4),
+									rs.getString(5),
+									rs.getString(6),
+									rs.getFloat(7),
+									rs.getByte(8),
+									rs.getString(9)));
+			}
+			
+			return al;
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+                        return null;
+		}
+		
+    }
 	
 
 }
