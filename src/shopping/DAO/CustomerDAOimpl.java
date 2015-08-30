@@ -163,4 +163,52 @@ public class CustomerDAOimpl implements CustomerDAO {
 		return al;
 	}
 
+    @Override
+    public ArrayList<Customer> getRange(int offset, int count) {
+        String sql = "SELECT * FROM Customers ORDER BY CustomerID LIMIT ?,?";
+		ArrayList<Customer> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new Customer(rs.getInt(1),
+									rs.getString(2),
+									rs.getString(3),
+									rs.getByte(4),
+									rs.getString(5),
+									rs.getString(6),
+									rs.getString(7),
+									rs.getString(8),
+									rs.getString(9),
+                                                                        rs.getString(10),
+                                                                        rs.getInt(11)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+    }
+
+    @Override
+    public int getSize() {
+        String sql = "SELECT count(*) FROM Customers";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
+    }
+
 }

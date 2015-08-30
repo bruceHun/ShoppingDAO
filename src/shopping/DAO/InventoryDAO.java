@@ -10,4 +10,6 @@ public interface InventoryDAO {
 	public void delete(Inventory i);
 	public Inventory searchbyID(int StockNumber);
 	public ArrayList<Inventory> showAll();
+        public ArrayList<Inventory> getRange(int offset, int count);
+        public int getSize();
 }

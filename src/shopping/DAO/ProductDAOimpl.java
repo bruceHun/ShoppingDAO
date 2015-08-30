@@ -157,7 +157,7 @@ public class ProductDAOimpl implements ProductDAO{
 	}
 
 	@Override
-	public ArrayList<Product> gerRange(int offset, int count) {
+	public ArrayList<Product> getRange(int offset, int count) {
 		String sql = "SELECT * FROM Products ORDER BY ProductID LIMIT ?,?";
 		ArrayList<Product> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 

@@ -138,4 +138,47 @@ public class InventoryDAOimpl implements InventoryDAO{
 		return al;
 	}
 
+    @Override
+    public ArrayList<Inventory> getRange(int offset, int count) {
+        String sql = "SELECT * FROM Inventory ORDER BY ProductID LIMIT = ?,?";
+		ArrayList<Inventory> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new Inventory(rs.getInt(1),
+									rs.getInt(2),
+									rs.getFloat(3),
+									rs.getInt(4),
+									rs.getInt(5),
+									rs.getInt(6)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+    }
+
+    @Override
+    public int getSize() {
+        String sql = "SELECT count(*) FROM Inventory";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
+    }
+
 }

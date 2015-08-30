@@ -10,4 +10,6 @@ public interface CustomerDAO {
 	public void delete(Customer c);
 	public Customer searchbyID(int CustomerID);
 	public ArrayList<Customer> showAll();
+        public ArrayList<Customer> getRange(int offset, int count);
+        public int getSize();
 }
