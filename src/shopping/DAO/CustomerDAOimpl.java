@@ -217,4 +217,39 @@ public class CustomerDAOimpl implements CustomerDAO {
 			return -1;
     }
 
+    @Override
+    public Customer SearchbyPersonalID(String PersonalID) {
+        String sql = "SELECT * FROM Customers WHERE PersonalID = ?";
+		Customer c = new Customer();
+		try (Connection conn = MySQLconn.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			
+			pstmt.setString(1, PersonalID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+			c.setCustomerID(rs.getInt(1));
+			c.setCustomerName(rs.getString(2));
+			c.setPersonalID(rs.getString(3));
+			c.setGender(rs.getByte(4));
+			c.setBirthDate(rs.getString(5));
+			c.setPhone(rs.getString(6));
+			c.setCelPhone(rs.getString(7));
+			c.setAddress(rs.getString(8));
+			c.setEmail(rs.getString(9));
+			c.setCustomerType(rs.getString(10));
+			c.setDiscountID(rs.getInt(11));
+			
+			return c;
+			
+			}else{
+			return null;
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return c;
+    }
+
 }
