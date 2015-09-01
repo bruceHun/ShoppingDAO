@@ -9,11 +9,11 @@ public class MySQLconn {
         Connection conn = null;
  
         String driverName = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/Shopping";
-        String user = "root";
-        String password = "123456";
-        //String connString = "jdbc:mysql://localhost:3306/Shopping?"
-                //+ "user=root&password=123456";
+        //String url = "jdbc:mysql://localhost:3306/Shopping";
+        //String user = "root";
+        //String password = "123456";
+        String connString = "jdbc:mysql://localhost:3306/Shopping?"
+                + "user=root&password=123456&useUnicode=true&characterEncoding=utf8";
         /*try (FileInputStream f = new FileInputStream("db.properties")){
             Class.forName(driverName);
             Properties pros = new Properties();
@@ -27,11 +27,11 @@ public class MySQLconn {
         	
         try{
         	Class.forName(driverName);
-        	conn = DriverManager.getConnection(url, user, password);
-
+        	//conn = DriverManager.getConnection(url, user, password);
+                conn = DriverManager.getConnection(connString);
             
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        //} catch (SQLException e) {
+            //System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}

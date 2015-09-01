@@ -196,12 +196,12 @@ public class ProductDAOimpl implements ProductDAO{
 		ArrayList<Product> al = new ArrayList<>();
                 
 		try (Connection conn = MySQLconn.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			
 			pstmt.setString(1, ProductName);
 			ResultSet rs = pstmt.executeQuery();
 			
-			if(rs.next()){
+			while(rs.next()){
 				al.add(new Product(rs.getInt(1),
 									rs.getString(2),
 									rs.getInt(3),
@@ -210,18 +210,18 @@ public class ProductDAOimpl implements ProductDAO{
 									rs.getString(6),
 									rs.getFloat(7),
 									rs.getByte(8),
-									rs.getString(9)));		
-			return al;
-                        
-                        }else{
-			return null;
-                        }
+									rs.getString(9)));
+			}                  
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
                         
 		}
+                if(al.isEmpty()){
+                    return null;
+                }else{
 		return al;
+                }
     }
 	
 
