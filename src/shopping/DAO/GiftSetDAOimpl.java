@@ -22,7 +22,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
 			pstmt.setString(1, g.getGiftSetName());
                         
-                        if(g.getID1()==-1){
+                        if(g.getID1()!=-1){
                             pstmt.setInt(2, g.getID1());
                         }else{
                             pstmt.setNull(2, Types.NULL);
@@ -166,7 +166,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
     @Override
     public ArrayList<GiftSet> getRange(int offset, int count) {
-        String sql = "SELECT * FROM GiftSet ORDER BY GiftSetID LIMIT ?,?";
+        String sql = "SELECT * FROM GiftSets ORDER BY GiftSetID LIMIT ?,?";
 		ArrayList<GiftSet> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -195,7 +195,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM GiftSet";
+        String sql = "SELECT count(*) FROM GiftSets";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
