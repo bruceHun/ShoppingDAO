@@ -1,5 +1,7 @@
 package shopping.Class;
 
+import java.util.ArrayList;
+
 public class Order {
 	private Integer OrderID;
 	private Integer CustomerID;
@@ -7,21 +9,26 @@ public class Order {
 	private String ShipDate;
 	private Integer DiscountID;
 	private Byte Canceled;
+        private ArrayList<OrderDetail> Detail;
 	
 	public Order(){
 		
 	}
 
-	public Order(Integer orderID, Integer customerID, String orderDate, String shipDate, Integer discountID, Byte canceled) {
-		super();
-		OrderID = orderID;
-		CustomerID = customerID;
-		OrderDate = orderDate;
-		ShipDate = shipDate;
-		DiscountID = discountID;
-		Canceled = canceled;
-	}
 
+
+    public Order(Integer OrderID, Integer CustomerID, String OrderDate, String ShipDate, Integer DiscountID, Byte Canceled) {
+        this.OrderID = OrderID;
+        this.CustomerID = CustomerID;
+        this.OrderDate = OrderDate;
+        this.ShipDate = ShipDate;
+        this.DiscountID = DiscountID;
+        this.Canceled = Canceled;
+        Detail = new ArrayList<>();
+    }
+
+        
+        
 	public int getOrderID() {
 		return OrderID;
 	}
@@ -70,6 +77,16 @@ public class Order {
 		Canceled = canceled;
 	}
 
+        public ArrayList<OrderDetail> getDetail() {
+            return Detail;
+        }
+
+        public void setDetail(ArrayList<OrderDetail> Detail) {
+            this.Detail = Detail;
+        }
+
+        
+        
 	@Override
 	public String toString() {
 		return "Order [OrderID=" + OrderID + ", CustomerID=" + CustomerID + ", OrderDate=" + OrderDate + ", ShipDate="

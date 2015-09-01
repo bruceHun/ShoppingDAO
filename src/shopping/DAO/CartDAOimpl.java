@@ -11,27 +11,13 @@ import shopping.Business.MySQLconn;
 import shopping.Class.Cart;
 
 public class CartDAOimpl implements CartDAO {
-    
-    private int IdCheck() {		
-		String sql = "SELECT MAX(StockNumber) FROM Inventory";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
-	
+    	
     @Override
     public int add(Cart c) {     
+            int ID = 0;
             String sql = "INSERT INTO Cart VALUES(null,?,?,?,?,?,?,?,?,?,?,?,?)";
-            try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            try (Connection conn = MySQLconn.getConnection(); 
+                    PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
                     pstmt.setString(1, c.getSession());
                     pstmt.setInt(2, c.getProductID());
@@ -48,10 +34,15 @@ public class CartDAOimpl implements CartDAO {
 
                     pstmt.executeUpdate();
                     System.out.println("Cart新增成功");
+                    
+                    ResultSet rs = pstmt.getGeneratedKeys();
+                        rs.next();
+                        ID = rs.getInt(1);
+                    
             } catch (SQLException e) {
                     System.out.println(e.getMessage());
             }
-            return IdCheck();
+            return ID;
     }
 
     @Override

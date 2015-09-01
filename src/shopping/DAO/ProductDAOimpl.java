@@ -12,27 +12,12 @@ import shopping.Class.Product;
 
 public class ProductDAOimpl implements ProductDAO{
 
-	private int IdCheck() {		
-		String sql = "SELECT MAX(ProductID) FROM Products";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
-	
 	@Override
 	public int add(Product p) {
+                int ProductID = 0;
 		String sql = "INSERT INTO Products VALUES(null,?,?,?,?,?,?,?,?)";
 		try (Connection conn = MySQLconn.getConnection(); 
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 			pstmt.setString(1, p.getBarcode());
 			pstmt.setInt(2, p.getCategoryID());
@@ -45,10 +30,13 @@ public class ProductDAOimpl implements ProductDAO{
 
 			pstmt.executeUpdate();
 			System.out.println("Product新增成功");
+                        ResultSet rs = pstmt.getGeneratedKeys();
+                        rs.next();
+                        ProductID = rs.getInt(1);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return IdCheck();
+		return ProductID;
 		
 	}
 
@@ -121,7 +109,7 @@ public class ProductDAOimpl implements ProductDAO{
 			
 			}else{
 			return null;
-			}
+                        }
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -213,7 +201,7 @@ public class ProductDAOimpl implements ProductDAO{
 			pstmt.setString(1, ProductName);
 			ResultSet rs = pstmt.executeQuery();
 			
-			while(rs.next()){
+			if(rs.next()){
 				al.add(new Product(rs.getInt(1),
 									rs.getString(2),
 									rs.getInt(3),
@@ -222,16 +210,18 @@ public class ProductDAOimpl implements ProductDAO{
 									rs.getString(6),
 									rs.getFloat(7),
 									rs.getByte(8),
-									rs.getString(9)));
-			}
-			
+									rs.getString(9)));		
 			return al;
+                        
+                        }else{
+			return null;
+                        }
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
                         
 		}
-		return null;
+		return al;
     }
 	
 

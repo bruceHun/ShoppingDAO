@@ -11,49 +11,37 @@ import shopping.Business.MySQLconn;
 import shopping.Class.OrderDetail;
 
 public class OrderDetailDAOimpl implements OrderDetailDAO{
-
-	private int IdCheck() {		
-		String sql = "SELECT MAX(ID) FROM OrderDetails";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public int add(OrderDetail od) {
+                int ID = 0;
 		String sql = "INSERT INTO OrderDetails VALUES(null,?,?,?,?,?)";
 		try (Connection conn = MySQLconn.getConnection(); 
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 			pstmt.setInt(1, od.getOrderID());
 			pstmt.setInt(2, od.getProductID());
 			pstmt.setInt(3, od.getGiftSetID());
-			/*if(od.getProductID()==null){
-                 pstmt.setNull(2,java.sql.Types.INTEGER);				
+			if(od.getProductID()==null){
+                        pstmt.setNull(2,java.sql.Types.INTEGER);				
 			}else{
 			pstmt.setInt(2, od.getProductID());}
 			if(od.getGiftSetID()==null){
-                 pstmt.setNull(3,java.sql.Types.INTEGER);				
+                        pstmt.setNull(3,java.sql.Types.INTEGER);				
 			}else{
-			pstmt.setInt(3, od.getGiftSetID());}*/
+			pstmt.setInt(3, od.getGiftSetID());}
 			pstmt.setFloat(4, od.getSalesPrice());
 			pstmt.setInt(5, od.getQuantity());
 
 			pstmt.executeUpdate();
 			System.out.println("OrderDetail新增成功");
+                        ResultSet rs = pstmt.getGeneratedKeys();
+                        rs.next();
+                        ID = rs.getInt(1);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return IdCheck();
+		return ID;
 		
 	}
 

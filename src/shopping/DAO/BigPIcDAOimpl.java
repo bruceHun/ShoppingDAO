@@ -11,37 +11,28 @@ import shopping.Business.MySQLconn;
 import shopping.Class.BigPic;
 
 public class BigPIcDAOimpl implements BigPicDAO{
-
-	private int IdCheck() {		
-		String sql = "SELECT MAX(BigPicID) FROM BigPics";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public int add(BigPic bp) {
+                int BigPicID=0;
 		String sql = "INSERT INTO BigPics VALUES(null,?,?)";
-		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		try (Connection conn = MySQLconn.getConnection(); 
+                        PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 				pstmt.setString(1, bp.getBigPicName());
 				pstmt.setInt(2, bp.getProductID());
 
 				pstmt.executeUpdate();
 				System.out.println("BigPic新增成功");
+                                
+                                ResultSet rs = pstmt.getGeneratedKeys();
+                                rs.next();
+                                BigPicID = rs.getInt(1);
+                                
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
-			return IdCheck();
+			return BigPicID;
 		
 	}
 

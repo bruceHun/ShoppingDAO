@@ -9,42 +9,58 @@ import java.util.ArrayList;
 
 import shopping.Business.MySQLconn;
 import shopping.Class.Order;
+import shopping.Class.OrderDetail;
 
 public class OrderDAOimpl implements OrderDAO{
-
-	private Integer IdCheck() {		
-		String sql = "SELECT MAX(OrderID) FROM Orders";
-		Integer ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public Integer add(Order o) {
-		String sql = "INSERT INTO Orders VALUES(null,?,?,?,?,?)";
-		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                int OrderID = 0;
+		String sql1 = "INSERT INTO Orders VALUES(null,?,?,?,?,?)";
+                String sql2 = "INSERT INTO OrderDetails VALUES(null,?,?,?,?,?)";
+		try (Connection conn = MySQLconn.getConnection(); 
+                        PreparedStatement pstmt1 = conn.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
+                        PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
+                        
+                        conn.setAutoCommit(false);
+                        
+			pstmt1.setInt(1, o.getCustomerID());
+			pstmt1.setString(2, o.getOrderDate());
+			pstmt1.setString(3, o.getShipDate());
+			pstmt1.setInt(4, o.getDiscountID());
+			pstmt1.setByte(5, o.getCanceled());
 
-			pstmt.setInt(1, o.getCustomerID());
-			pstmt.setString(2, o.getOrderDate());
-			pstmt.setString(3, o.getShipDate());
-			pstmt.setInt(4, o.getDiscountID());
-			pstmt.setByte(5, o.getCanceled());
-
-			pstmt.executeUpdate();
+			pstmt1.executeUpdate();
 			System.out.println("Order新增成功");
+                        ResultSet rs = pstmt1.getGeneratedKeys();
+                        rs.next();
+                        OrderID = rs.getInt(1);
+                        
+                        
+                        for(OrderDetail od : o.getDetail()){
+			pstmt2.setInt(1, OrderID);
+			
+			if(od.getProductID()==-1){              //欄位要放空值，需給-1
+                        pstmt2.setNull(2,java.sql.Types.NULL);				
+			}else{
+			pstmt2.setInt(2, od.getProductID());}
+			if(od.getGiftSetID()==-1){              //欄位要放空值，需給-1
+                        pstmt2.setNull(3,java.sql.Types.NULL);				
+			}else{
+			pstmt2.setInt(3, od.getGiftSetID());}
+			pstmt2.setFloat(4, od.getSalesPrice());
+			pstmt2.setInt(5, od.getQuantity());
+
+			pstmt2.executeUpdate();
+			System.out.println("OrderDetail新增成功");
+                        }
+                        conn.commit();
+                        conn.setAutoCommit(true);
+                        
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return IdCheck();
+		return OrderID;
 		
 	}
 

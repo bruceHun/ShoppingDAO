@@ -11,36 +11,25 @@ import shopping.Business.MySQLconn;
 import shopping.Class.ProductCategory;
 
 public class ProductCategoryDAOimpl implements ProductCategoryDAO{
-
-	private int IdCheck() {		
-		String sql = "SELECT MAX(CategoryID) FROM ProductCategory";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public int add(ProductCategory pc) {
+                int CatagoryID = 0;
 		String sql = "INSERT INTO ProductCategory VALUES(null,?)";
-		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		try (Connection conn = MySQLconn.getConnection(); 
+                        PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 				pstmt.setString(1, pc.getCategoryName());
 
 				pstmt.executeUpdate();
 				System.out.println("ProductCategory新增成功");
+                                ResultSet rs = pstmt.getGeneratedKeys();
+                                rs.next();
+                                CatagoryID = rs.getInt(1);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
-			return IdCheck();
+			return CatagoryID;
 		
 	}
 

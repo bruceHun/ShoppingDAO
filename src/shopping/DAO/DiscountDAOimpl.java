@@ -12,36 +12,27 @@ import shopping.Class.Discount;
 
 public class DiscountDAOimpl implements DiscountDAO{
 
-	private int IdCheck() {		
-		String sql = "SELECT MAX(DiscountID) FROM Discounts";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public int add(Discount d) {
+                int DiscountID = 0;
 		String sql = "INSERT INTO Discounts VALUES(null,?)";
-		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		try (Connection conn = MySQLconn.getConnection(); 
+                        PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 				pstmt.setFloat(1, d.getDiscount());
 				
 
 				pstmt.executeUpdate();
 				System.out.println("Discount新增成功");
+                                
+                                ResultSet rs = pstmt.getGeneratedKeys();
+                                rs.next();
+                                DiscountID = rs.getInt(1);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
-			return IdCheck();
+			return DiscountID;
 		
 	}
 

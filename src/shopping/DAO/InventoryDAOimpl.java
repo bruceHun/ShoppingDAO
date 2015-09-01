@@ -11,27 +11,13 @@ import shopping.Business.MySQLconn;
 import shopping.Class.Inventory;
 
 public class InventoryDAOimpl implements InventoryDAO{
-
-	private int IdCheck() {		
-		String sql = "SELECT MAX(StockNumber) FROM Inventory";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public int add(Inventory i) {
+                int StockNumber = 0;
 		String sql = "INSERT INTO Inventory VALUES(null,?,?,?,?,?)";
-		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		try (Connection conn = MySQLconn.getConnection(); 
+                        PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 			pstmt.setInt(1, i.getProductID());
 			pstmt.setFloat(2, i.getCost());
@@ -41,10 +27,13 @@ public class InventoryDAOimpl implements InventoryDAO{
 
 			pstmt.executeUpdate();
 			System.out.println("Inventory新增成功");
+                        ResultSet rs = pstmt.getGeneratedKeys();
+                        rs.next();
+                        StockNumber = rs.getInt(1);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		return IdCheck();
+		return StockNumber;
 		
 	}
 

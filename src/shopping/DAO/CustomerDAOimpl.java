@@ -21,6 +21,7 @@ public class CustomerDAOimpl implements CustomerDAO {
                         PreparedStatement pstmt1 = conn.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
                         PreparedStatement pstmt2 = conn.prepareStatement(sql2)) 
                 {
+                        conn.setAutoCommit(false);
 
 			pstmt1.setString(1, c.getCustomerName());
 			pstmt1.setString(2, c.getPersonalID());
@@ -46,6 +47,9 @@ public class CustomerDAOimpl implements CustomerDAO {
 
                         pstmt2.executeUpdate();
                         System.out.println("Membership新增成功");
+                        
+                        conn.commit();
+                        conn.setAutoCommit(true);
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}       
