@@ -10,4 +10,6 @@ public interface GiftSetDAO {
 	public void delete(GiftSet g);
 	public GiftSet searchbyID(Integer GiftSetID);
 	public ArrayList<GiftSet> showAll();
+        public ArrayList<GiftSet> getRange(int offset, int count);
+        public int getSize();
 }

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.sql.Types;
 
 import shopping.Business.MySQLconn;
 import shopping.Class.GiftSet;
@@ -34,11 +35,29 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, g.getGiftSetName());
-			pstmt.setInt(2, g.getID1());
-			pstmt.setInt(3, g.getID2());
-			pstmt.setInt(4, g.getID3());
-			pstmt.setInt(5, g.getID4());
-			pstmt.setInt(6, g.getID5());
+                        
+                        if(g.getID1()==-1){
+                            pstmt.setInt(2, g.getID1());
+                        }else{
+                            pstmt.setNull(2, Types.NULL);
+                        }if(g.getID2()!=-1){
+                            pstmt.setInt(3, g.getID2());
+                        }else{			
+                            pstmt.setNull(3, Types.NULL);
+                        }if(g.getID3()!=-1){
+                            pstmt.setInt(4, g.getID3());
+                        }else{
+                            pstmt.setNull(4, Types.NULL);			
+                        }if(g.getID4()!=-1){
+                            pstmt.setInt(5, g.getID4());
+                        }else{
+                            pstmt.setNull(5, Types.NULL);			
+                        }if(g.getID5()!=-1){
+                            pstmt.setInt(6, g.getID5());
+                        }else{
+                            pstmt.setNull(6, Types.NULL);			
+                        }
+			
 			pstmt.setFloat(7, g.getUnitPrice());
 			pstmt.setByte(8, g.getDiscontinued());
 			
@@ -153,5 +172,51 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
 		return al;
 	}
+
+    @Override
+    public ArrayList<GiftSet> getRange(int offset, int count) {
+        String sql = "SELECT * FROM GiftSet ORDER BY GiftSetID LIMIT ?,?";
+		ArrayList<GiftSet> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new GiftSet(rs.getInt(1),
+									rs.getString(2),
+									rs.getInt(3),
+									rs.getInt(4),
+									rs.getInt(5),
+									rs.getInt(6),
+                                                                        rs.getInt(7),
+                                                                        rs.getFloat(8),
+                                                                        rs.getByte(9)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+    }
+
+    @Override
+    public int getSize() {
+        String sql = "SELECT count(*) FROM GiftSet";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
+    }
 
 }

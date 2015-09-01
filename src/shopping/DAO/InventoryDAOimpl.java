@@ -140,7 +140,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
     @Override
     public ArrayList<Inventory> getRange(int offset, int count) {
-        String sql = "SELECT * FROM Inventory ORDER BY ProductID LIMIT = ?,?";
+        String sql = "SELECT * FROM Inventory ORDER BY ProductID LIMIT ?,?";
 		ArrayList<Inventory> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {

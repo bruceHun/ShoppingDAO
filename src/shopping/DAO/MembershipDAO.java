@@ -11,5 +11,7 @@ public interface MembershipDAO {
 	public Membership searchbyID(int CustomerID);
 	public Membership searchbyAccount(String Account);
 	public ArrayList<Membership> showAll();
+        public ArrayList<Membership> getRange(int offset, int count);
+        public int getSize();
 }
 

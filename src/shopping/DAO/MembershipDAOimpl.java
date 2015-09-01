@@ -156,5 +156,46 @@ public class MembershipDAOimpl implements MembershipDAO{
 		}
 		return m;
 	}
+
+    @Override
+    public ArrayList<Membership> getRange(int offset, int count) {
+        String sql = "SELECT * FROM Membership ORDER BY CustomerID LIMIT ?,?";
+		ArrayList<Membership> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new Membership(rs.getInt(1),
+									rs.getString(2),
+									rs.getString(3),
+									rs.getByte(4)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+    }
+
+    @Override
+    public int getSize() {
+        String sql = "SELECT count(*) FROM Membership";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
+    }
 	
 }

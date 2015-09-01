@@ -11,45 +11,47 @@ import shopping.Business.MySQLconn;
 import shopping.Class.Customer;
 
 public class CustomerDAOimpl implements CustomerDAO {
-
-	private int IdCheck() {		
-		String sql = "SELECT MAX(CustomerID) FROM Customers";
-		int ID = 0;
-		try(Connection conn = MySQLconn.getConnection();
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)){
-			
-			rs.next();
-			ID = rs.getInt(1);
-				
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-		}
-		return ID;
-	}
 	
 	@Override
 	public int add(Customer c) {
-		String sql = "INSERT INTO Customers VALUES(null,?,?,?,?,?,?,?,?,?,?)";
-		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                int CustomerID = 0;
+		String sql1 = "INSERT INTO Customers VALUES(null,?,?,?,?,?,?,?,?,?,?)";
+                String sql2 = "INSERT INTO Membership VALUES(?,?,?,?)";
+		try (Connection conn = MySQLconn.getConnection(); 
+                        PreparedStatement pstmt1 = conn.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
+                        PreparedStatement pstmt2 = conn.prepareStatement(sql2)) 
+                {
 
-			pstmt.setString(1, c.getCustomerName());
-			pstmt.setString(2, c.getPersonalID());
-			pstmt.setByte(3, c.getGender());
-			pstmt.setString(4, c.getBirthDate());
-			pstmt.setString(5, c.getPhone());
-			pstmt.setString(6, c.getCelPhone());
-			pstmt.setString(7, c.getAddress());
-			pstmt.setString(8, c.getEmail());
-			pstmt.setString(9, c.getCustomerType());
-			pstmt.setInt(10, c.getDiscountID());
+			pstmt1.setString(1, c.getCustomerName());
+			pstmt1.setString(2, c.getPersonalID());
+			pstmt1.setByte(3, c.getGender());
+			pstmt1.setString(4, c.getBirthDate());
+			pstmt1.setString(5, c.getPhone());
+			pstmt1.setString(6, c.getCelPhone());
+			pstmt1.setString(7, c.getAddress());
+			pstmt1.setString(8, c.getEmail());
+			pstmt1.setString(9, c.getCustomerType());
+			pstmt1.setInt(10, c.getDiscountID());
 
-			pstmt.executeUpdate();
+			pstmt1.executeUpdate();
 			System.out.println("Customer新增成功");
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return IdCheck();
+                        ResultSet rs = pstmt1.getGeneratedKeys();
+                        rs.next();
+                        CustomerID = rs.getInt(1);
+ 
+                        pstmt2.setInt(1, CustomerID);
+                        pstmt2.setString(2, c.getMember().getAccount());
+                        pstmt2.setString(3, c.getMember().getPassword());
+                        pstmt2.setByte(4, c.getMember().getMembership());
+
+                        pstmt2.executeUpdate();
+                        System.out.println("Membership新增成功");
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}       
+		
+		
+		return CustomerID;
 
 	}
 

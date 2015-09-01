@@ -14,6 +14,7 @@ public class Customer {
 	private String Email;
 	private String CustomerType;
 	private Integer DiscountID;
+        private Membership Member;
 	
 	public Customer() {
 		super();
@@ -34,117 +35,104 @@ public class Customer {
 		Email = email;
 		CustomerType = customerType;
 		DiscountID = discountID;
+                Member = new Membership();
 	}
 
-	public Integer getCustomerID() {
-		return CustomerID;
-	}
+    public Integer getCustomerID() {
+        return CustomerID;
+    }
 
+    public void setCustomerID(Integer CustomerID) {
+        this.CustomerID = CustomerID;
+    }
 
-	public void setCustomerID(Integer customerID) {
-		CustomerID = customerID;
-	}
+    public String getCustomerName() {
+        return CustomerName;
+    }
 
+    public void setCustomerName(String CustomerName) {
+        this.CustomerName = CustomerName;
+    }
 
-	public String getCustomerName() {
-		return CustomerName;
-	}
+    public String getPersonalID() {
+        return PersonalID;
+    }
 
+    public void setPersonalID(String PersonalID) {
+        this.PersonalID = PersonalID;
+    }
 
-	public void setCustomerName(String customerName) {
-		CustomerName = customerName;
-	}
+    public Byte getGender() {
+        return Gender;
+    }
 
+    public void setGender(Byte Gender) {
+        this.Gender = Gender;
+    }
 
-	public String getPersonalID() {
-		return PersonalID;
-	}
+    public String getBirthDate() {
+        return BirthDate;
+    }
 
+    public void setBirthDate(String BirthDate) {
+        this.BirthDate = BirthDate;
+    }
 
-	public void setPersonalID(String personalID) {
-		PersonalID = personalID;
-	}
+    public String getPhone() {
+        return Phone;
+    }
 
+    public void setPhone(String Phone) {
+        this.Phone = Phone;
+    }
 
-	public Byte getGender() {
-		return Gender;
-	}
+    public String getCelPhone() {
+        return CelPhone;
+    }
 
+    public void setCelPhone(String CelPhone) {
+        this.CelPhone = CelPhone;
+    }
 
-	public void setGender(Byte gender) {
-		Gender = gender;
-	}
+    public String getAddress() {
+        return Address;
+    }
 
+    public void setAddress(String Address) {
+        this.Address = Address;
+    }
 
-	public String getBirthDate() {
-		return BirthDate;
-	}
+    public String getEmail() {
+        return Email;
+    }
 
+    public void setEmail(String Email) {
+        this.Email = Email;
+    }
 
-	public void setBirthDate(String birthDate) {
-		BirthDate = birthDate;
-	}
+    public String getCustomerType() {
+        return CustomerType;
+    }
 
+    public void setCustomerType(String CustomerType) {
+        this.CustomerType = CustomerType;
+    }
 
-	public String getPhone() {
-		return Phone;
-	}
+    public Integer getDiscountID() {
+        return DiscountID;
+    }
 
+    public void setDiscountID(Integer DiscountID) {
+        this.DiscountID = DiscountID;
+    }
 
-	public void setPhone(String phone) {
-		Phone = phone;
-	}
+    public Membership getMember() {
+        return Member;
+    }
 
-
-	public String getCelPhone() {
-		return CelPhone;
-	}
-
-
-	public void setCelPhone(String celPhone) {
-		CelPhone = celPhone;
-	}
-
-
-	public String getAddress() {
-		return Address;
-	}
-
-
-	public void setAddress(String address) {
-		Address = address;
-	}
-
-
-	public String getEmail() {
-		return Email;
-	}
-
-
-	public void setEmail(String email) {
-		Email = email;
-	}
-
-
-	public String getCustomerType() {
-		return CustomerType;
-	}
-
-
-	public void setCustomerType(String customerType) {
-		CustomerType = customerType;
-	}
-
-
-	public Integer getDiscountID() {
-		return DiscountID;
-	}
-
-
-	public void setDiscountID(Integer discountID) {
-		DiscountID = discountID;
-	}
-
+    public void setMember(Membership Member) {
+        this.Member = Member;
+    }
 
 	@Override
 	public String toString(){
