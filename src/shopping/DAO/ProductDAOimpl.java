@@ -229,9 +229,9 @@ public class ProductDAOimpl implements ProductDAO{
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-                        return null;
+                        
 		}
-		
+		return null;
     }
 	
 
