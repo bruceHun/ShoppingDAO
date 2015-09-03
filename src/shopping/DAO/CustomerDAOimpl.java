@@ -252,4 +252,40 @@ public class CustomerDAOimpl implements CustomerDAO {
 		return c;
     }
 
+    @Override
+    public ArrayList<Customer> findByName(String CustomerName) {
+        String sql = "SELECT * FROM Customers WHERE CustomerName = ?";
+		ArrayList<Customer> al = new ArrayList<>();
+                
+		try (Connection conn = MySQLconn.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setString(1, CustomerName);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				al.add(new Customer(rs.getInt(1),
+									rs.getString(2),
+									rs.getString(3),
+									rs.getByte(4),
+									rs.getString(5),
+									rs.getString(6),
+									rs.getString(7),
+									rs.getString(8),
+									rs.getString(9),
+                                                                        rs.getString(10),
+                                                                        rs.getInt(11)));
+			}                  
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+                        
+		}
+                if(al.isEmpty()){
+                    return null;
+                }else{
+		return al;
+                }
+    }
+
 }

@@ -13,4 +13,5 @@ public interface CustomerDAO {
 	public ArrayList<Customer> showAll();
         public ArrayList<Customer> getRange(int offset, int count);
         public int getSize();
+        public ArrayList<Customer> findByName(String CustomerName);
 }

@@ -10,4 +10,7 @@ public interface OrderDAO {
 	public void delete(Order o);
 	public Order searchbyID(Integer OrderID);
 	public ArrayList<Order> showAll();
+        public ArrayList<Order> getRange(int offset, int count);
+	public int getSize();
+        public ArrayList<Order> findByCustomerID(Integer CustomerID);
 }

@@ -154,4 +154,79 @@ public class OrderDAOimpl implements OrderDAO{
 		return al;
 	}
 
+    @Override
+    public ArrayList<Order> getRange(int offset, int count) {
+        String sql = "SELECT * FROM Orders ORDER BY OrderID LIMIT ?,?";
+		ArrayList<Order> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new Order(rs.getInt(1),
+									rs.getInt(2),
+									rs.getString(3),
+									rs.getString(4),
+									rs.getInt(5),
+									rs.getByte(6)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+    }
+
+    @Override
+    public int getSize() {
+        String sql = "SELECT count(*) FROM Orders";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
+    }
+
+    @Override
+    public ArrayList<Order> findByCustomerID(Integer CustomerID) {
+        String sql = "SELECT * FROM Orders WHERE CustomerID = ?";
+		ArrayList<Order> al = new ArrayList<>();
+                
+		try (Connection conn = MySQLconn.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			pstmt.setInt(1, CustomerID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				al.add(new Order(rs.getInt(1),
+									rs.getInt(2),
+									rs.getString(3),
+									rs.getString(4),
+									rs.getInt(5),
+									rs.getByte(6)));
+			}                  
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+                        
+		}
+                if(al.isEmpty()){
+                    return null;
+                }else{
+		return al;
+                }
+    }
+
+
 }
