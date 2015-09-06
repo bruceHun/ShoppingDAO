@@ -10,134 +10,107 @@ public class Product {
 	private Float UnitPrice;
 	private Byte Discontinued;
 	private String Description;
+        private Inventory Stock;
 	
 	public Product() {
 	}
 
+    public Product(Integer ProductID, String Barcode, Integer CategoryID, String ProductName, String ProductUnit, String Capacity, Float UnitPrice, Byte Discontinued, String Description) {
+        this.ProductID = ProductID;
+        this.Barcode = Barcode;
+        this.CategoryID = CategoryID;
+        this.ProductName = ProductName;
+        this.ProductUnit = ProductUnit;
+        this.Capacity = Capacity;
+        this.UnitPrice = UnitPrice;
+        this.Discontinued = Discontinued;
+        this.Description = Description;
+        Stock = new Inventory();
+    }
+
 	
+
+    public Integer getProductID() {
+        return ProductID;
+    }
+
+    public void setProductID(Integer ProductID) {
+        this.ProductID = ProductID;
+    }
+
+    public String getBarcode() {
+        return Barcode;
+    }
+
+    public void setBarcode(String Barcode) {
+        this.Barcode = Barcode;
+    }
+
+    public Integer getCategoryID() {
+        return CategoryID;
+    }
+
+    public void setCategoryID(Integer CategoryID) {
+        this.CategoryID = CategoryID;
+    }
+
+    public String getProductName() {
+        return ProductName;
+    }
+
+    public void setProductName(String ProductName) {
+        this.ProductName = ProductName;
+    }
+
+    public String getProductUnit() {
+        return ProductUnit;
+    }
+
+    public void setProductUnit(String ProductUnit) {
+        this.ProductUnit = ProductUnit;
+    }
+
+    public String getCapacity() {
+        return Capacity;
+    }
+
+    public void setCapacity(String Capacity) {
+        this.Capacity = Capacity;
+    }
+
+    public Float getUnitPrice() {
+        return UnitPrice;
+    }
+
+    public void setUnitPrice(Float UnitPrice) {
+        this.UnitPrice = UnitPrice;
+    }
+
+    public Byte getDiscontinued() {
+        return Discontinued;
+    }
+
+    public void setDiscontinued(Byte Discontinued) {
+        this.Discontinued = Discontinued;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String Description) {
+        this.Description = Description;
+    }
+
+    public Inventory getStock() {
+        return Stock;
+    }
+
+    public void setStock(Inventory Stock) {
+        this.Stock = Stock;
+    }
+
 	
-	public Product(Integer productID, String barcode, Integer categoryID, String productName, String productUnit,
-			String capacity, Float unitPrice, Byte discontinued, String description) {
-		super();
-		ProductID = productID;
-		Barcode = barcode;
-		CategoryID = categoryID;
-		ProductName = productName;
-		ProductUnit = productUnit;
-		Capacity = capacity;
-		UnitPrice = unitPrice;
-		Discontinued = discontinued;
-		Description = description;
-	}
-
-
-
-	public Integer getProductID() {
-		return ProductID;
-	}
-
-
-
-	public void setProductID(Integer productID) {
-		ProductID = productID;
-	}
-
-
-
-	public String getBarcode() {
-		return Barcode;
-	}
-
-
-
-	public void setBarcode(String barcode) {
-		Barcode = barcode;
-	}
-
-
-
-	public Integer getCategoryID() {
-		return CategoryID;
-	}
-
-
-
-	public void setCategoryID(Integer categoryID) {
-		CategoryID = categoryID;
-	}
-
-
-
-	public String getProductName() {
-		return ProductName;
-	}
-
-
-
-	public void setProductName(String productName) {
-		ProductName = productName;
-	}
-
-
-
-	public String getProductUnit() {
-		return ProductUnit;
-	}
-
-
-
-	public void setProductUnit(String productUnit) {
-		ProductUnit = productUnit;
-	}
-
-
-
-	public String getCapacity() {
-		return Capacity;
-	}
-
-
-
-	public void setCapacity(String capacity) {
-		Capacity = capacity;
-	}
-
-
-
-	public Float getUnitPrice() {
-		return UnitPrice;
-	}
-
-
-
-	public void setUnitPrice(Float unitPrice) {
-		UnitPrice = unitPrice;
-	}
-
-
-
-	public Byte getDiscontinued() {
-		return Discontinued;
-	}
-
-
-
-	public void setDiscontinued(Byte discontinued) {
-		Discontinued = discontinued;
-	}
-
-
-
-	public String getDescription() {
-		return Description;
-	}
-
-
-
-	public void setDescription(String description) {
-		Description = description;
-	}
-
 
 
 	@Override

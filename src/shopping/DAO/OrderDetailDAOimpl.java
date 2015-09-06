@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import shopping.Business.MySQLconn;
-import shopping.Class.Customer;
 import shopping.Class.OrderDetail;
 
 public class OrderDetailDAOimpl implements OrderDetailDAO {
@@ -121,7 +120,7 @@ public class OrderDetailDAOimpl implements OrderDetailDAO {
 
     @Override
     public ArrayList<OrderDetail> showAll() {
-        String sql = "SELECT * FROM OrderDetails ORDER BY ID";
+        String sql = "SELECT * FROM OrderDetails ORDER BY OrderID";
         ArrayList<OrderDetail> al = new ArrayList<>();
         try (Connection conn = MySQLconn.getConnection();
                 Statement stmt = conn.createStatement();
@@ -186,7 +185,7 @@ public class OrderDetailDAOimpl implements OrderDetailDAO {
 
     @Override
     public ArrayList<OrderDetail> findByOrderID(int OrderID) {
-        String sql = "SELECT * FROM OrderDetails WHERE OrderID = ?";
+        String sql = "SELECT * FROM OrderDetails WHERE OrderID = ? ORDER BY OrderID";
         ArrayList<OrderDetail> al = new ArrayList<>();
 
         try (Connection conn = MySQLconn.getConnection();

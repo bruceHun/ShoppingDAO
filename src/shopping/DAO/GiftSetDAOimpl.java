@@ -74,11 +74,29 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 				+ "Discontinued = ? WHERE GiftSetID = ?";
 			try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setString(1, g.getGiftSetName());
-				pstmt.setInt(2, g.getID1());
-				pstmt.setInt(3, g.getID2());
-				pstmt.setInt(4, g.getID3());
-				pstmt.setInt(5, g.getID4());
-				pstmt.setInt(6, g.getID5());
+				
+                                 if(g.getID1()!=-1){
+                                pstmt.setInt(2, g.getID1());
+                                }else{
+                                    pstmt.setNull(2, Types.NULL);
+                                }if(g.getID2()!=-1){
+                                    pstmt.setInt(3, g.getID2());
+                                }else{			
+                                    pstmt.setNull(3, Types.NULL);
+                                }if(g.getID3()!=-1){
+                                    pstmt.setInt(4, g.getID3());
+                                }else{
+                                    pstmt.setNull(4, Types.NULL);			
+                                }if(g.getID4()!=-1){
+                                    pstmt.setInt(5, g.getID4());
+                                }else{
+                                    pstmt.setNull(5, Types.NULL);			
+                                }if(g.getID5()!=-1){
+                                    pstmt.setInt(6, g.getID5());
+                                }else{
+                                    pstmt.setNull(6, Types.NULL);			
+                                }
+                                
 				pstmt.setFloat(7, g.getUnitPrice());
 				pstmt.setByte(8, g.getDiscontinued());
 				pstmt.setInt(9, g.getGiftSetID());

@@ -13,4 +13,5 @@ public interface ProductDAO {
 	public ArrayList<Product> getRange(int offset, int count);
 	public int getSize();
         public ArrayList<Product> findByName(String ProductName);
+        public ArrayList<Product> findByCategoryID(int CategoryID);
 }

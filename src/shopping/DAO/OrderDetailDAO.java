@@ -1,7 +1,6 @@
 package shopping.DAO;
 
 import java.util.ArrayList;
-import shopping.Class.Customer;
 
 import shopping.Class.OrderDetail;
 

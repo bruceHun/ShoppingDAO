@@ -77,7 +77,7 @@ public class AdministratorDAOimpl implements AdministratorDAO{
 	}
 
 	@Override
-	public Administrator searchbyID(String Account) {
+	public Administrator searchbyAccount(String Account) {
 		
 		String sql = "SELECT * FROM Administrators WHERE Account = ?";
 		Administrator a = new Administrator();
@@ -106,7 +106,7 @@ public class AdministratorDAOimpl implements AdministratorDAO{
 
 	@Override
 	public ArrayList<Administrator> showAll() {
-		String sql = "SELECT * FROM Administrators ORDER BY Level";
+		String sql = "SELECT * FROM Administrators WHERE Account != '@root' ORDER BY Level";
 		ArrayList<Administrator> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -123,6 +123,46 @@ public class AdministratorDAOimpl implements AdministratorDAO{
 		}
 
 		return al;
+	}
+
+   @Override
+	public ArrayList<Administrator> getRange(int offset, int count) {
+		String sql = "SELECT * FROM Administrators WHERE Account != '@root' ORDER BY Level LIMIT ?,?";
+		ArrayList<Administrator> al = new ArrayList<>();
+		try (Connection conn = MySQLconn.getConnection(); 
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setInt(1,(offset-1));
+				pstmt.setInt(2,count);
+				ResultSet rs = pstmt.executeQuery();
+				
+			while(rs.next()){
+				al.add(new Administrator(rs.getString(1),
+									rs.getString(2),
+									rs.getString(3)));
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return al;
+	}
+
+	@Override
+	public int getSize() {
+			String sql = "SELECT count(*) FROM Administrators";
+			try (Connection conn = MySQLconn.getConnection(); 
+					Statement stmt = conn.createStatement();
+					ResultSet rs = stmt.executeQuery(sql)) {
+				rs.next();
+				return rs.getInt(1);
+				
+					
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+			return -1;
 	}
 
 }

@@ -63,7 +63,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 	public void update(Customer c) {
 		String sql = "UPDATE Customers SET CustomerName = ?, "
 										+ "PersonalID = ?, "
-										+ "Gender = ?"
+										+ "Gender = ?,"
 										+ "BirthDate = ?, "
 										+ "Phone = ?, "
 										+ "CelPhone = ?, "

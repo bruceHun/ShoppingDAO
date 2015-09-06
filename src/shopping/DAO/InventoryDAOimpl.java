@@ -43,7 +43,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 				+ "Cost = ?, "
 				+ "UnitsInStock = ?, "
 				+ "UnitsOnOrder = ?, "
-				+ "SaftyStock = ? WHERE StockNumber = ?";
+				+ "SafetyStock = ? WHERE StockNumber = ?";
 			try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 				pstmt.setInt(1, i.getProductID());
 				pstmt.setFloat(2, i.getCost());
@@ -170,4 +170,33 @@ public class InventoryDAOimpl implements InventoryDAO{
 			return -1;
     }
 
+    @Override
+	public Inventory searchbyProductID(int ProductID) {
+		String sql = "SELECT * FROM Inventory WHERE ProductID = ?";
+		Inventory i = new Inventory();
+		try (Connection conn = MySQLconn.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);) {
+			
+			pstmt.setInt(1, ProductID);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()){
+			i.setStockNumber(rs.getInt(1));
+			i.setProductID(rs.getInt(2));
+			i.setCost(rs.getFloat(3));
+			i.setUnitsInStock(rs.getInt(4));
+			i.setUnitsOnOrder(rs.getInt(5));
+			i.setSaftyStock(rs.getInt(6));
+			
+			return i;
+			
+			}else{
+			return null;
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return i;
+	}
 }

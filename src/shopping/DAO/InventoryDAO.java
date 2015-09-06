@@ -12,4 +12,5 @@ public interface InventoryDAO {
 	public ArrayList<Inventory> showAll();
         public ArrayList<Inventory> getRange(int offset, int count);
         public int getSize();
+        public Inventory searchbyProductID(int ProductID);
 }
