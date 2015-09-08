@@ -15,12 +15,21 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 	@Override
 	public int add(SmallPic sp) {
                 int SmallPicID = 0;
-		String sql = "INSERT INTO SmallPics VALUES(null,?,?)";
+		String sql = "INSERT INTO SmallPics VALUES(null,?,?,?)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
 				pstmt.setString(1, sp.getSmallPicName());
-				pstmt.setInt(2, sp.getProductID());
+				
+                                if(sp.getProductID()==-1){              //欄位要放空值，需給-1
+                                pstmt.setNull(2,java.sql.Types.NULL);				
+                                }else{
+                                pstmt.setInt(2, sp.getProductID());}
+
+                                if(sp.getGiftSetID()==-1){
+                                pstmt.setNull(3, java.sql.Types.NULL);
+                                }else{
+                                pstmt.setInt(3, sp.getGiftSetID());}
 
 				pstmt.executeUpdate();
 				System.out.println("SmallPics新增成功");
@@ -36,11 +45,13 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 	@Override
 	public void update(SmallPic sp) {
 		String sql = "UPDATE SmallPics SET SmallPicName = ?, "
-				+ "ProductID = ?  WHERE SmallPicID = ?";
+				+ "ProductID = ?, "
+                                + "GiftSetID= ?  WHERE SmallPicID = ?";
 			try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setString(1,sp.getSmallPicName());
 			pstmt.setInt(2, sp.getProductID());
 			pstmt.setInt(3, sp.getSmallPicID());
+                        pstmt.setInt(4, sp.getGiftSetID());
 			
 			pstmt.executeUpdate();
 			System.out.println("SmallPic更新成功");
@@ -77,6 +88,7 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 			sp.setSmallPicID(rs.getInt(1));
 			sp.setSmallPicName(rs.getString(2));
 			sp.setProductID(rs.getInt(3));
+                        sp.setGiftSetID(rs.getInt(4));
 			
 			return sp;
 			
@@ -101,7 +113,8 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 			while(rs.next()){
 				al.add(new SmallPic(rs.getInt(1),
 									rs.getString(2),
-									rs.getInt(3)));
+									rs.getInt(3),
+                                                                        rs.getInt(4)));
 				}
 
 		} catch (SQLException e) {

@@ -4,12 +4,13 @@ public class SmallPic {
 	private Integer SmallPicID;
 	private String SmallPicName;
 	private Integer ProductID;
+        private Integer GiftSetID;
 	
 	public SmallPic(){
 		
 	}
 
-	public SmallPic(Integer smallPicID, String smallPicName, Integer productID) {
+	public SmallPic(Integer smallPicID, String smallPicName, Integer productID, Integer GiftSetID) {
 		super();
 		SmallPicID = smallPicID;
 		SmallPicName = smallPicName;
@@ -40,6 +41,16 @@ public class SmallPic {
 		ProductID = productID;
 	}
 
+        public Integer getGiftSetID() {
+            return GiftSetID;
+        }
+
+        public void setGiftSetID(Integer GiftSetID) {
+            this.GiftSetID = GiftSetID;
+        }
+
+        
+        
 	@Override
 	public String toString() {
 		return "SmallPic [SmallPicID=" + SmallPicID + ", SmallPicName=" + SmallPicName + ", ProductID=" + ProductID

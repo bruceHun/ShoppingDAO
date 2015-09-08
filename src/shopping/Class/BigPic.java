@@ -4,12 +4,13 @@ public class BigPic {
 	private Integer BigPicID;
 	private String BigPicName;
 	private Integer ProductID;
+        private Integer GiftSetID;
 	
 	public BigPic(){
 		
 	}
 
-	public BigPic(Integer bigPicID, String bigPicName, Integer productID) {
+	public BigPic(Integer bigPicID, String bigPicName, Integer productID, Integer GiftSetID) {
 		super();
 		BigPicID = bigPicID;
 		BigPicName = bigPicName;
@@ -39,6 +40,16 @@ public class BigPic {
 	public void setProductID(Integer productID) {
 		ProductID = productID;
 	}
+
+        public Integer getGiftSetID() {
+            return GiftSetID;
+        }
+
+        public void setGiftSetID(Integer GiftSetID) {
+            this.GiftSetID = GiftSetID;
+        }
+        
+        
 
 	@Override
 	public String toString() {
