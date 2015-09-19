@@ -3,38 +3,34 @@ package shopping.Business;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import com.google.appengine.api.utils.SystemProperty;
 
 public class MySQLconn {
-	public static Connection getConnection() throws SQLException {
-        Connection conn = null;
- 
-        String driverName = "com.mysql.jdbc.Driver";
-        //String url = "jdbc:mysql://localhost:3306/Shopping";
-        //String user = "root";
-        //String password = "123456";
-        String connString = "jdbc:mysql://localhost:3306/Shopping?"
-                + "user=root&password=123456&useUnicode=true&characterEncoding=utf8";
-        /*try (FileInputStream f = new FileInputStream("db.properties")){
-            Class.forName(driverName);
-            Properties pros = new Properties();
-            pros.load(f);
-            
-            String url = pros.getProperty("url");
-            String user = pros.getProperty("user");
-            String password = pros.getProperty("password");
-            
-            conn = DriverManager.getConnection(url,user,password);*/
-        	
-        try{
-        	Class.forName(driverName);
-        	//conn = DriverManager.getConnection(url, user, password);
-                conn = DriverManager.getConnection(connString);
-            
-        //} catch (SQLException e) {
-            //System.out.println(e.getMessage());
+
+    public static Connection getConnection() throws SQLException {
+
+        String url = null; 
+        try {
+            if (SystemProperty.environment.value()
+                    == SystemProperty.Environment.Value.Production) {
+
+                // Connecting from App Engine.
+                // Load the class that provides the "jdbc:google:mysql://"
+                // prefix.
+                Class.forName("com.mysql.jdbc.GoogleDriver");
+                url = "jdbc:google:mysql://javalab-1033:us/shopping?user=root"
+                        + "&useUnicode=true&characterEncoding=utf8";
+            } else {
+                // Connecting from an external network.
+                Class.forName("com.mysql.jdbc.Driver");
+                url = "jdbc:mysql://173.194.86.196:3306/shopping?user=BruceH"
+                        + "&useUnicode=true&characterEncoding=utf8";
+            }
         } catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
-		}
+            System.err.println(e.getMessage());
+        }
+        Connection conn = DriverManager.getConnection(url);
+
         return conn;
     }
 }

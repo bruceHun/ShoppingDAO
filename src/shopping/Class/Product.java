@@ -11,9 +11,11 @@ public class Product {
 	private Byte Discontinued;
 	private String Description;
         private Inventory Stock;
-	
-	public Product() {
-	}
+        private SmallPic SmallP;
+	private BigPic[] BigP;
+        
+    public Product() {
+    }
 
     public Product(Integer ProductID, String Barcode, Integer CategoryID, String ProductName, String ProductUnit, String Capacity, Float UnitPrice, Byte Discontinued, String Description) {
         this.ProductID = ProductID;
@@ -26,6 +28,8 @@ public class Product {
         this.Discontinued = Discontinued;
         this.Description = Description;
         Stock = new Inventory();
+        SmallP = new SmallPic();
+        BigP = new BigPic[6];
     }
 
 	
@@ -110,20 +114,31 @@ public class Product {
         this.Stock = Stock;
     }
 
+    public SmallPic getSmallP() {
+        return SmallP;
+    }
+
+    public void setSmallP(SmallPic SmallP) {
+        this.SmallP = SmallP;
+    }
+
+    public BigPic[] getBigP() {
+        return BigP;
+    }
+
+    public void setBigP(BigPic[] BigP) {
+        this.BigP = BigP;
+    }
+
+ 
+    
+    @Override
+    public String toString() {
+        return "Product{" + "ProductID=" + ProductID + ", Barcode=" + Barcode + ", CategoryID=" + CategoryID + ", ProductName=" + ProductName + ", ProductUnit=" + ProductUnit + ", Capacity=" + Capacity + ", UnitPrice=" + UnitPrice + ", Discontinued=" + Discontinued + ", Description=" + Description + ", Stock=" + Stock + ", BigP=" + BigP + ", SmallP=" + SmallP + '}';
+    }
+
+    
+
+
 	
-
-
-	@Override
-	public String toString(){
-		return 	"\nProductID: "+ProductID
-				+"\nBarcode: "+Barcode
-				+"\nCategoryID: "+CategoryID
-				+"\nProductName: "+ProductName
-				+"\nProductUnit: "+ProductUnit
-				+"\nCapacity: "+Capacity
-				+"\nUnitPrice: "+UnitPrice
-				+"\nDiscontinued: "+Discontinued
-				+"\nDescription: "+Description;
-		
-	}
 }

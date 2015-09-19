@@ -15,7 +15,7 @@ public class ProductCategoryDAOimpl implements ProductCategoryDAO{
 	@Override
 	public int add(ProductCategory pc) {
                 int CatagoryID = 0;
-		String sql = "INSERT INTO ProductCategory VALUES(null,?)";
+		String sql = "INSERT INTO ProductCategory VALUES(null,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
@@ -50,7 +50,7 @@ public class ProductCategoryDAOimpl implements ProductCategoryDAO{
 
 	@Override
 	public void delete(ProductCategory pc) {
-		String sql = "DELETE FROM ProductCategory WHERE CategoryID = ?";
+		String sql = "UPDATE ProductCategory SET flag = 0 WHERE CategoryID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, pc.getCategoryID());
 			int count = pstmt.executeUpdate();
@@ -63,7 +63,7 @@ public class ProductCategoryDAOimpl implements ProductCategoryDAO{
 
 	@Override
 	public ProductCategory searchbyID(int CategoryID) {
-		String sql = "SELECT * FROM ProductCategory WHERE CategoryID = ?";
+		String sql = "SELECT * FROM ProductCategory WHERE CategoryID = ? AND flag !=0";
 		ProductCategory pc = new ProductCategory();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -89,7 +89,7 @@ public class ProductCategoryDAOimpl implements ProductCategoryDAO{
 
 	@Override
 	public ArrayList<ProductCategory> showAll() {
-		String sql = "SELECT * FROM ProductCategory ORDER BY CategoryID";
+		String sql = "SELECT * FROM ProductCategory WHERE flag !=0 ORDER BY CategoryID";
 		ArrayList<ProductCategory> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 

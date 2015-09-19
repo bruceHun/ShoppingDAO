@@ -16,7 +16,7 @@ public class DiscountDAOimpl implements DiscountDAO{
 	@Override
 	public int add(Discount d) {
                 int DiscountID = 0;
-		String sql = "INSERT INTO Discounts VALUES(null,?)";
+		String sql = "INSERT INTO Discounts VALUES(null,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
@@ -53,7 +53,7 @@ public class DiscountDAOimpl implements DiscountDAO{
 
 	@Override
 	public void delete(Discount d) {
-		String sql = "DELETE FROM Discounts WHERE DiscountID = ?";
+		String sql = "UPDATE Discounts SET flag = 0 WHERE DiscountID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, d.getDiscountID());
 			int count = pstmt.executeUpdate();
@@ -66,7 +66,7 @@ public class DiscountDAOimpl implements DiscountDAO{
 
 	@Override
 	public Discount searchbyID(int DiscountID) {
-		String sql = "SELECT * FROM Discounts WHERE DiscountID = ?";
+		String sql = "SELECT * FROM Discounts WHERE DiscountID = ? AND flag !=0";
 		Discount d = new Discount();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -92,7 +92,7 @@ public class DiscountDAOimpl implements DiscountDAO{
 
 	@Override
 	public ArrayList<Discount> showAll() {
-		String sql = "SELECT * FROM Discounts ORDER BY DiscountID";
+		String sql = "SELECT * FROM Discounts WHERE flag !=0 ORDER BY DiscountID";
 		ArrayList<Discount> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 

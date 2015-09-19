@@ -15,7 +15,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 	@Override
 	public int add(Inventory i) {
                 int StockNumber = 0;
-		String sql = "INSERT INTO Inventory VALUES(null,?,?,?,?,?)";
+		String sql = "INSERT INTO Inventory VALUES(null,?,?,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
@@ -62,7 +62,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
 	@Override
 	public void delete(Inventory i) {
-		String sql = "DELETE FROM Inventory WHERE StockNumber = ?";
+		String sql = "UPDATE Inventory SET flag = 0 WHERE StockNumber = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, i.getStockNumber());
 			int count = pstmt.executeUpdate();
@@ -75,7 +75,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
 	@Override
 	public Inventory searchbyID(int StockNumber) {
-		String sql = "SELECT * FROM Inventory WHERE StockNumber = ?";
+		String sql = "SELECT * FROM Inventory WHERE StockNumber = ? AND flag !=0";
 		Inventory i = new Inventory();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -105,7 +105,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
 	@Override
 	public ArrayList<Inventory> showAll() {
-		String sql = "SELECT * FROM Inventory ORDER BY StockNumber";
+		String sql = "SELECT * FROM Inventory WHERE flag !=0 ORDER BY StockNumber";
 		ArrayList<Inventory> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -129,7 +129,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
     @Override
     public ArrayList<Inventory> getRange(int offset, int count) {
-        String sql = "SELECT * FROM Inventory ORDER BY ProductID LIMIT ?,?";
+        String sql = "SELECT * FROM Inventory WHERE flag !=0 ORDER BY ProductID LIMIT ?,?";
 		ArrayList<Inventory> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -155,7 +155,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM Inventory";
+        String sql = "SELECT count(*) FROM Inventory WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
@@ -172,7 +172,7 @@ public class InventoryDAOimpl implements InventoryDAO{
 
     @Override
 	public Inventory searchbyProductID(int ProductID) {
-		String sql = "SELECT * FROM Inventory WHERE ProductID = ?";
+		String sql = "SELECT * FROM Inventory WHERE ProductID = ? AND flag !=0";
 		Inventory i = new Inventory();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {

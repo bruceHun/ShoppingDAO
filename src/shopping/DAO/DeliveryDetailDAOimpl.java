@@ -15,7 +15,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
     @Override
     public int add(DeliveryDetail dd) {
                 int ID = 0;
-		String sql = "INSERT INTO DeliveryDetails VALUES(null,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO DeliveryDetails VALUES(null,?,?,?,?,?,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
@@ -70,7 +70,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
 
     @Override
     public void delete(DeliveryDetail dd) {
-        String sql = "DELETE FROM DeliveryDetails WHERE ID = ?";
+        String sql = "UPDATE DeliveryDetails SET flag = 0 WHERE ID = ?";
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, dd.getID());
@@ -83,7 +83,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
 
     @Override
     public DeliveryDetail searchbyID(Integer ID) {
-        String sql = "SELECT * FROM DeliveryDetails WHERE ID = ?";
+        String sql = "SELECT * FROM DeliveryDetails WHERE ID = ? AND flag !=0";
 		DeliveryDetail dd = new DeliveryDetail();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -116,7 +116,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
 
     @Override
     public ArrayList<DeliveryDetail> showAll() {
-        String sql = "SELECT * FROM DeliveryDetails ORDER BY ID";
+        String sql = "SELECT * FROM DeliveryDetails WHERE flag !=0 ORDER BY ID";
 		ArrayList<DeliveryDetail> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -143,7 +143,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
 
     @Override
     public ArrayList<DeliveryDetail> getRange(int offset, int count) {
-        String sql = "SELECT * FROM DeliveryDetails ORDER BY ID LIMIT ?,?";
+        String sql = "SELECT * FROM DeliveryDetails WHERE flag !=0 ORDER BY ID LIMIT ?,?";
 		ArrayList<DeliveryDetail> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -172,7 +172,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM DeliveryDetails";
+        String sql = "SELECT count(*) FROM DeliveryDetails WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
@@ -189,7 +189,7 @@ public class DeliveryDetailDAOimpl implements DeliveryDetailDAO{
 
     @Override
     public ArrayList<DeliveryDetail> searchbyOrderID(Integer OrderID) {
-        String sql = "SELECT * FROM DeliveryDetails WHERE OrderID = ?";
+        String sql = "SELECT * FROM DeliveryDetails WHERE OrderID = ? AND flag !=0";
 		ArrayList<DeliveryDetail> al = new ArrayList<>();
                 
 		try (Connection conn = MySQLconn.getConnection();

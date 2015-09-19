@@ -15,7 +15,7 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 	@Override
 	public int add(SmallPic sp) {
                 int SmallPicID = 0;
-		String sql = "INSERT INTO SmallPics VALUES(null,?,?,?)";
+		String sql = "INSERT INTO SmallPics VALUES(null,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
@@ -63,7 +63,7 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 
 	@Override
 	public void delete(SmallPic sp) {
-		String sql = "DELETE FROM SmallPics WHERE SmallPicID = ?";
+		String sql = "UPDATE SmallPics SET flag = 0 WHERE SmallPicID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, sp.getSmallPicID());
 			int count = pstmt.executeUpdate();
@@ -76,7 +76,7 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 
 	@Override
 	public SmallPic searchbyID(int SmallpicID) {
-		String sql = "SELECT * FROM SmallPics WHERE SmallPicID = ?";
+		String sql = "SELECT * FROM SmallPics WHERE SmallPicID = ? AND flag !=0";
 		SmallPic sp = new SmallPic();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -104,7 +104,7 @@ public class SmallPicDAOimpl implements SmallPicDAO{
 
 	@Override
 	public ArrayList<SmallPic> showAll() {
-		String sql = "SELECT * FROM SmallPics ORDER BY SmallPicID";
+		String sql = "SELECT * FROM SmallPics WHERE flag !=0 ORDER BY SmallPicID";
 		ArrayList<SmallPic> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 

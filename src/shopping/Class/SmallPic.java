@@ -49,13 +49,14 @@ public class SmallPic {
             this.GiftSetID = GiftSetID;
         }
 
+        @Override
+        public String toString() {
+            return "SmallPic{" + "SmallPicID=" + SmallPicID + ", SmallPicName=" + SmallPicName + ", ProductID=" + ProductID + ", GiftSetID=" + GiftSetID + '}';
+        }
+
         
         
-	@Override
-	public String toString() {
-		return "SmallPic [SmallPicID=" + SmallPicID + ", SmallPicName=" + SmallPicName + ", ProductID=" + ProductID
-				+ "]";
-	}
+	
 	
 	
 }

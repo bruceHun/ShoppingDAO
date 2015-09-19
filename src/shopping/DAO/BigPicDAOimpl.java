@@ -10,12 +10,12 @@ import java.util.ArrayList;
 import shopping.Business.MySQLconn;
 import shopping.Class.BigPic;
 
-public class BigPIcDAOimpl implements BigPicDAO{
+public class BigPicDAOimpl implements BigPicDAO{
 	
 	@Override
 	public int add(BigPic bp) {
                 int BigPicID=0;
-		String sql = "INSERT INTO BigPics VALUES(null,?,?,?)";
+		String sql = "INSERT INTO BigPics VALUES(null,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
 
@@ -73,7 +73,7 @@ public class BigPIcDAOimpl implements BigPicDAO{
 
 	@Override
 	public void delete(BigPic bp) {
-		String sql = "DELETE FROM BigPics WHERE BigPicID = ?";
+		String sql = "UPDATE BigPics SET flag = 0 WHERE BigPicID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, bp.getBigPicID());
 			int count = pstmt.executeUpdate();
@@ -87,7 +87,7 @@ public class BigPIcDAOimpl implements BigPicDAO{
 
 	@Override
 	public BigPic searchbyID(int BigPicID) {
-		String sql = "SELECT * FROM BigPics WHERE BigPicID = ?";
+		String sql = "SELECT * FROM BigPics WHERE BigPicID = ? AND flag !=0";
 		BigPic bp = new BigPic();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -116,7 +116,7 @@ public class BigPIcDAOimpl implements BigPicDAO{
 
 	@Override
 	public ArrayList<BigPic> showAll() {
-		String sql = "SELECT * FROM BigPics ORDER BY BigPicID";
+		String sql = "SELECT * FROM BigPics WHERE flag !=0 ORDER BY BigPicID";
 		ArrayList<BigPic> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 

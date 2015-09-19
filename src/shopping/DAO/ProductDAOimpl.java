@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import shopping.Business.MySQLconn;
+import shopping.Class.BigPic;
 import shopping.Class.Product;
 
 public class ProductDAOimpl implements ProductDAO{
@@ -15,14 +16,18 @@ public class ProductDAOimpl implements ProductDAO{
 	@Override
 	public int add(Product p) {
                 int ProductID = 0;
-		String sql1 = "INSERT INTO Products VALUES(null,?,?,?,?,?,?,?,?)";
-                String sql2 = "INSERT INTO Inventory VALUES(null,?,?,?,?,?)";
+		String sql1 = "INSERT INTO Products VALUES(null,?,?,?,?,?,?,?,?,1)";
+                String sql2 = "INSERT INTO Inventory VALUES(null,?,?,?,?,?,1)";
+                String sql3 = "INSERT INTO BigPics VALUES(null,?,?,null,1)";
+                String sql4 = "INSERT INTO SmallPics VALUES(null,?,?,null,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt1 = conn.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
-                                PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
+                                PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+                                PreparedStatement pstmt3 = conn.prepareStatement(sql3);
+                                PreparedStatement pstmt4 = conn.prepareStatement(sql4)) {
                     
                         conn.setAutoCommit(false);
-
+                        //設定產品資料
 			pstmt1.setString(1, p.getBarcode());
 			pstmt1.setInt(2, p.getCategoryID());
 			pstmt1.setString(3, p.getProductName());
@@ -39,7 +44,7 @@ public class ProductDAOimpl implements ProductDAO{
                         ProductID = rs.getInt(1);
                         
                         
-
+                        //設定庫存資料
 			pstmt2.setInt(1, ProductID);
 			pstmt2.setFloat(2, p.getStock().getCost());
 			pstmt2.setInt(3, p.getStock().getUnitsInStock());
@@ -49,6 +54,22 @@ public class ProductDAOimpl implements ProductDAO{
 			pstmt2.executeUpdate();
 			System.out.println("Inventory新增成功");
                         
+                        //設定大圖資料
+                    for (int i = 1; i <= p.getBigP().length; i++) {
+                        pstmt3.setString(1, "ps_"+ProductID+i+".jpg");
+                        pstmt3.setInt(2, ProductID);
+                        
+                        pstmt3.executeUpdate();
+                        System.out.println("BigPic新增成功");
+                    }
+                        
+                        //設定小圖資料
+                        pstmt4.setString(1, "s_"+ProductID+".jpg");				
+                        pstmt4.setInt(2, ProductID);
+                        
+                        pstmt4.executeUpdate();
+                        System.out.println("SmallPics新增成功");
+        
                         conn.commit();
                         conn.setAutoCommit(true);
                         
@@ -61,7 +82,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public void update(Product p) {
-		String sql1 = "UPDATE Products SET Barcode = ?, "
+		String sql = "UPDATE Products SET Barcode = ?, "
 				+ "CategoryID = ?, "
 				+ "ProductName = ?, "
 				+ "ProductUnit = ?, "
@@ -69,18 +90,9 @@ public class ProductDAOimpl implements ProductDAO{
 				+ "UnitPrice = ?, "
 				+ "Discontinued = ?, "
 				+ "Description = ? WHERE ProductID = ?";
-                
-                 String sql2 = "UPDATE Inventory SET ProductID = ?, "
-				+ "Cost = ?, "
-				+ "UnitsInStock = ?, "
-				+ "UnitsOnOrder = ?, "
-				+ "SafetyStock = ? WHERE StockNumber = ?";
                  
 			try (Connection conn = MySQLconn.getConnection(); 
-					PreparedStatement pstmt1 = conn.prepareStatement(sql1);
-                                        PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
-                            
-                                conn.setAutoCommit(false);
+					PreparedStatement pstmt1 = conn.prepareStatement(sql);) {
                             
 				pstmt1.setString(1, p.getBarcode());
 				pstmt1.setInt(2, p.getCategoryID());
@@ -95,21 +107,6 @@ public class ProductDAOimpl implements ProductDAO{
 				pstmt1.executeUpdate();
 				System.out.println("Product更新成功");
                                 
-                               
-			
-				pstmt2.setInt(1, p.getStock().getProductID());
-				pstmt2.setFloat(2, p.getStock().getCost());
-				pstmt2.setInt(3, p.getStock().getUnitsInStock());
-				pstmt2.setInt(4, p.getStock().getUnitsOnOrder());
-				pstmt2.setInt(5, p.getStock().getSaftyStock());
-				pstmt2.setInt(6, p.getStock().getStockNumber());
-			
-				pstmt2.executeUpdate();
-				System.out.println("Inventory更新成功");
-                                
-                                conn.commit();
-                                conn.setAutoCommit(true);
-                                
 				} catch (SQLException e) {
 				System.out.println(e.getMessage());
 				}
@@ -118,7 +115,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public void delete(Product p) {
-		String sql = "DELETE FROM Products WHERE ProductID = ?";
+		String sql = "UPDATE Products SET flag = 0 WHERE ProductID = ?";
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, p.getProductID());
@@ -132,7 +129,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public Product searchbyID(Integer ProductID) {
-		String sql = "SELECT * FROM Products WHERE ProductID = ?";
+		String sql = "SELECT * FROM Products WHERE ProductID = ? AND flag !=0";
 		Product p = new Product();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -165,7 +162,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public ArrayList<Product> showAll() {
-		String sql = "SELECT * FROM Products ORDER BY ProductID";
+		String sql = "SELECT * FROM Products WHERE flag !=0 ORDER BY ProductID";
 		ArrayList<Product> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -192,7 +189,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public ArrayList<Product> getRange(int offset, int count) {
-		String sql = "SELECT * FROM Products ORDER BY ProductID LIMIT ?,?"; 
+		String sql = "SELECT * FROM Products WHERE flag !=0 ORDER BY ProductID LIMIT ?,?"; 
 		ArrayList<Product> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -221,7 +218,7 @@ public class ProductDAOimpl implements ProductDAO{
 
 	@Override
 	public int getSize() {
-			String sql = "SELECT count(*) FROM Products";
+			String sql = "SELECT count(*) FROM Products WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
@@ -238,7 +235,7 @@ public class ProductDAOimpl implements ProductDAO{
 
     @Override
     public ArrayList<Product> findByName(String ProductName) {
-        		String sql = "SELECT * FROM Products WHERE ProductName = ?";
+        		String sql = "SELECT * FROM Products WHERE ProductName = ? AND flag !=0";
 		ArrayList<Product> al = new ArrayList<>();
                 
 		try (Connection conn = MySQLconn.getConnection();
@@ -272,7 +269,7 @@ public class ProductDAOimpl implements ProductDAO{
 
     @Override
     public ArrayList<Product> findByCategoryID(int CategoryID) {
-        String sql = "SELECT * FROM Products WHERE CategoryID = ?";
+        String sql = "SELECT * FROM Products WHERE CategoryID = ? AND flag !=0";
 		ArrayList<Product> al = new ArrayList<>();
                 
 		try (Connection conn = MySQLconn.getConnection();

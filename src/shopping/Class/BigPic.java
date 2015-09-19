@@ -48,13 +48,15 @@ public class BigPic {
         public void setGiftSetID(Integer GiftSetID) {
             this.GiftSetID = GiftSetID;
         }
-        
+
+        @Override
+        public String toString() {
+            return "BigPic{" + "BigPicID=" + BigPicID + ", BigPicName=" + BigPicName + ", ProductID=" + ProductID + ", GiftSetID=" + GiftSetID + '}';
+        }
+
         
 
-	@Override
-	public String toString() {
-		return "BigPic [BigPicID=" + BigPicID + ", BigPicName=" + BigPicName + ", ProductID=" + ProductID + "]";
-	}
+	
 	
 	
 }

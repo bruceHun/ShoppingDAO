@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package shopping.Business;
 
@@ -11,8 +7,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/** 此類別包含了以MD5格式加密的類別方法 */
 public class SavePWD {
 
+    /**
+     *這個方法可以將輸入的String參數加上一個預設字串後，
+     *以MD5的格式回傳ㄧ個32位元的加密字串。
+     *@param pwd 欲加密的字串
+     *@return 32bit MD5 String
+     */
     public static String encode(String pwd) {
         pwd = pwd + "shop";
         StringBuffer hexString = null;
@@ -29,11 +32,14 @@ public class SavePWD {
                 }
                 hexString.append(pwd);
             }
-            
+           
             
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(SavePWD.class.getName()).log(Level.SEVERE, null, ex);
         }return hexString.toString();
     }
+     /** 
+   
+     */
     
 }

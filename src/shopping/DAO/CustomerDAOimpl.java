@@ -15,8 +15,8 @@ public class CustomerDAOimpl implements CustomerDAO {
 	@Override
 	public int add(Customer c) {
                 int CustomerID = 0;
-		String sql1 = "INSERT INTO Customers VALUES(null,?,?,?,?,?,?,?,?,?,?)";
-                String sql2 = "INSERT INTO Membership VALUES(?,?,?,?)";
+		String sql1 = "INSERT INTO Customers VALUES(null,?,?,?,?,?,?,?,?,?,?,1)";
+                String sql2 = "INSERT INTO Membership VALUES(?,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt1 = conn.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
                         PreparedStatement pstmt2 = conn.prepareStatement(sql2)) 
@@ -94,7 +94,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
 	@Override
 	public void delete(Customer c) {
-		String sql = "DELETE FROM Customers WHERE CustomerID = ?";
+		String sql = "UPDATE Customers SET flag = 0 WHERE CustomerID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, c.getCustomerID());
 			int count = pstmt.executeUpdate();
@@ -107,7 +107,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
 	@Override
 	public Customer searchbyID(int CustomerID) {
-		String sql = "SELECT * FROM Customers WHERE CustomerID = ?";
+		String sql = "SELECT * FROM Customers WHERE CustomerID = ? AND flag !=0";
 		Customer c = new Customer();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -142,7 +142,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
 	@Override
 	public ArrayList<Customer> showAll() {
-		String sql = "SELECT * FROM Customers ORDER BY CustomerID";
+		String sql = "SELECT * FROM Customers WHERE flag !=0 ORDER BY CustomerID";
 		ArrayList<Customer> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -171,7 +171,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
     public ArrayList<Customer> getRange(int offset, int count) {
-        String sql = "SELECT * FROM Customers ORDER BY CustomerID LIMIT ?,?";
+        String sql = "SELECT * FROM Customers WHERE flag !=0 ORDER BY CustomerID LIMIT ?,?";
 		ArrayList<Customer> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -202,7 +202,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM Customers";
+        String sql = "SELECT count(*) FROM Customers WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
@@ -219,7 +219,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
     public Customer SearchbyPersonalID(String PersonalID) {
-        String sql = "SELECT * FROM Customers WHERE PersonalID = ?";
+        String sql = "SELECT * FROM Customers WHERE PersonalID = ? AND flag !=0";
 		Customer c = new Customer();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -254,7 +254,7 @@ public class CustomerDAOimpl implements CustomerDAO {
 
     @Override
     public ArrayList<Customer> findByName(String CustomerName) {
-        String sql = "SELECT * FROM Customers WHERE CustomerName = ?";
+        String sql = "SELECT * FROM Customers WHERE CustomerName = ? AND flag !=0";
 		ArrayList<Customer> al = new ArrayList<>();
                 
 		try (Connection conn = MySQLconn.getConnection();

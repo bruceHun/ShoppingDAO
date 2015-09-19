@@ -30,7 +30,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 	
 	@Override
 	public int add(Membership m) {
-		String sql = "INSERT INTO Membership VALUES(?,?,?,?)";
+		String sql = "INSERT INTO Membership VALUES(?,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 				pstmt.setInt(1, m.getCustomerID());
@@ -68,7 +68,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 
 	@Override
 	public void delete(Membership m) {
-		String sql = "DELETE FROM Memebership WHERE CustomerID = ?";
+		String sql = "UPDATE Membership SET flag = 0 WHERE CustomerID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, m.getCustomerID());
 			int count = pstmt.executeUpdate();
@@ -81,7 +81,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 
 	@Override
 	public Membership searchbyID(int CustomerID) {
-		String sql = "SELECT * FROM Membership WHERE CustomerID = ?";
+		String sql = "SELECT * FROM Membership WHERE CustomerID = ? AND flag !=0";
 		Membership m = new Membership();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -109,7 +109,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 
 	@Override
 	public ArrayList<Membership> showAll() {
-		String sql = "SELECT * FROM Membership ORDER BY CustomerID";
+		String sql = "SELECT * FROM Membership WHERE flag !=0 ORDER BY CustomerID";
 		ArrayList<Membership> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -131,7 +131,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 
 	@Override
 	public Membership searchbyAccount(String Account) {
-		String sql = "SELECT * FROM Membership WHERE Account = ?";
+		String sql = "SELECT * FROM Membership WHERE Account = ? AND flag !=0";
 		Membership m = new Membership();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -159,7 +159,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 
     @Override
     public ArrayList<Membership> getRange(int offset, int count) {
-        String sql = "SELECT * FROM Membership ORDER BY CustomerID LIMIT ?,?";
+        String sql = "SELECT * FROM Membership WHERE flag !=0 ORDER BY CustomerID LIMIT ?,?";
 		ArrayList<Membership> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -183,7 +183,7 @@ public class MembershipDAOimpl implements MembershipDAO{
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM Membership";
+        String sql = "SELECT count(*) FROM Membership WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {

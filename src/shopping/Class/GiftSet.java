@@ -1,15 +1,17 @@
 package shopping.Class;
 
 public class GiftSet {
-	private Integer GiftSetID;
-	private String GiftSetName;
-	private Integer ID1;
-	private Integer ID2;
-	private Integer ID3;
-	private Integer ID4;
-	private Integer ID5;
-	private Float UnitPrice;
-	private Byte Discontinued;
+	private Integer GiftSetID;  //1
+	private String GiftSetName; //2
+	private Integer ID1;        //3
+	private Integer ID2;        //4
+	private Integer ID3;        //5
+	private Integer ID4;        //6
+	private Integer ID5;        //7
+	private Float UnitPrice;    //8
+	private Byte Discontinued;  //9
+        private SmallPic SmallP;
+        private BigPic[] BigP;
 	
 	public GiftSet(){
 		
@@ -29,6 +31,8 @@ public class GiftSet {
 		ID5 = iD5;
 		UnitPrice = unitPrice;
 		Discontinued = discontinued;
+                SmallP = new SmallPic();
+                BigP = new BigPic[6];
 	}
 
 
@@ -139,14 +143,30 @@ public class GiftSet {
 		Discontinued = discontinued;
 	}
 
+        public SmallPic getSmallP() {
+            return SmallP;
+        }
 
+        public void setSmallP(SmallPic SmallP) {
+            this.SmallP = SmallP;
+        }
 
-	@Override
-	public String toString() {
-		return "GiftSet [GiftSetID=" + GiftSetID + ", GiftSetName=" + GiftSetName + ", ID1=" + ID1 + ", ID2=" + ID2
-				+ ", ID3=" + ID3 + ", ID4=" + ID4 + ", ID5=" + ID5 + ", UnitPrice=" + UnitPrice + ", Discontinued="
-				+ Discontinued + "]";
-	}
+        public BigPic[] getBigP() {
+            return BigP;
+        }
+
+        public void setBigP(BigPic[] BigP) {
+            this.BigP = BigP;
+        }
+
+    @Override
+    public String toString() {
+        return "GiftSet{" + "GiftSetID=" + GiftSetID + ", GiftSetName=" + GiftSetName + ", ID1=" + ID1 + ", ID2=" + ID2 + ", ID3=" + ID3 + ", ID4=" + ID4 + ", ID5=" + ID5 + ", UnitPrice=" + UnitPrice + ", Discontinued=" + Discontinued + ", SmallP=" + SmallP + ", BigP=" + BigP + '}';
+    }
+
+        
+        
+
 	
 	
 }

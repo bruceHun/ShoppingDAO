@@ -16,8 +16,8 @@ public class OrderDAOimpl implements OrderDAO{
 	@Override
 	public Integer add(Order o) {
                 int OrderID = 0;
-		String sql1 = "INSERT INTO Orders VALUES(null,?,?,?,?,?)";
-                String sql2 = "INSERT INTO OrderDetails VALUES(null,?,?,?,?,?)";
+		String sql1 = "INSERT INTO Orders VALUES(null,?,?,?,?,?,1)";
+                String sql2 = "INSERT INTO OrderDetails VALUES(null,?,?,?,?,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
                         PreparedStatement pstmt1 = conn.prepareStatement(sql1,Statement.RETURN_GENERATED_KEYS);
                         PreparedStatement pstmt2 = conn.prepareStatement(sql2)) {
@@ -89,7 +89,7 @@ public class OrderDAOimpl implements OrderDAO{
 
 	@Override
 	public void delete(Order o) {
-		String sql = "DELETE FROM Orders WHERE OrderID = ?";
+		String sql = "UPDATE Orders SET flag = 0 WHERE OrderID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, o.getOrderID());
 			int count = pstmt.executeUpdate();
@@ -102,7 +102,7 @@ public class OrderDAOimpl implements OrderDAO{
 
 	@Override
 	public Order searchbyID(Integer OrderID) {
-		String sql = "SELECT * FROM Orders WHERE OrderID = ?";
+		String sql = "SELECT * FROM Orders WHERE OrderID = ? AND flag !=0";
 		Order o = new Order();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -132,7 +132,7 @@ public class OrderDAOimpl implements OrderDAO{
 
 	@Override
 	public ArrayList<Order> showAll() {
-		String sql = "SELECT * FROM Orders ORDER BY OrderID";
+		String sql = "SELECT * FROM Orders WHERE flag !=0 ORDER BY OrderID";
 		ArrayList<Order> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -156,7 +156,7 @@ public class OrderDAOimpl implements OrderDAO{
 
     @Override
     public ArrayList<Order> getRange(int offset, int count) {
-        String sql = "SELECT * FROM Orders ORDER BY OrderID LIMIT ?,?";
+        String sql = "SELECT * FROM Orders WHERE flag !=0 ORDER BY OrderID LIMIT ?,?";
 		ArrayList<Order> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -182,7 +182,7 @@ public class OrderDAOimpl implements OrderDAO{
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM Orders";
+        String sql = "SELECT count(*) FROM Orders WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
@@ -199,7 +199,7 @@ public class OrderDAOimpl implements OrderDAO{
 
     @Override
     public ArrayList<Order> findByCustomerID(Integer CustomerID) {
-        String sql = "SELECT * FROM Orders WHERE CustomerID = ?";
+        String sql = "SELECT * FROM Orders WHERE CustomerID = ? AND flag !=0";
 		ArrayList<Order> al = new ArrayList<>();
                 
 		try (Connection conn = MySQLconn.getConnection();

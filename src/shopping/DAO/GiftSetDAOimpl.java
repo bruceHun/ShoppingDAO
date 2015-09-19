@@ -16,10 +16,16 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 	@Override
 	public int add(GiftSet g) {
                 int GiftSetID = 0;
-		String sql = "INSERT INTO GiftSets VALUES(null,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO GiftSets VALUES(null,?,?,?,?,?,?,?,?,1)";
+                String sql2 = "INSERT INTO BigPics VALUES(null,?,null,?,1)";
+                String sql3 = "INSERT INTO SmallPics VALUES(null,?,null,?,1)";
 		try (Connection conn = MySQLconn.getConnection(); 
-                        PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)) {
+                        PreparedStatement pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+                        PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+                                PreparedStatement pstmt3 = conn.prepareStatement(sql3)) {
 
+                        conn.setAutoCommit(false);
+                        
 			pstmt.setString(1, g.getGiftSetName());
                         
                         if(g.getID1()!=-1){
@@ -54,6 +60,25 @@ public class GiftSetDAOimpl implements GiftSetDAO{
                         ResultSet rs = pstmt.getGeneratedKeys();
                         rs.next();
                         GiftSetID = rs.getInt(1);
+                        
+                        //設定大圖資料
+                    for (int i = 1; i <= g.getBigP().length; i++) {
+                        pstmt2.setString(1, "pg_"+GiftSetID+i+".jpg");
+                        pstmt2.setInt(2, GiftSetID);
+                        
+                        pstmt2.executeUpdate();
+                        System.out.println("BigPic新增成功");
+                    }
+                        
+                        //設定小圖資料
+                        pstmt3.setString(1, "g_"+GiftSetID+".jpg");
+                        pstmt3.setInt(2, GiftSetID);
+                        
+                        pstmt3.executeUpdate();
+                        System.out.println("SmallPics新增成功");
+        
+                        conn.commit();
+                        conn.setAutoCommit(true);
                         
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -111,7 +136,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
 	@Override
 	public void delete(GiftSet g) {
-		String sql = "DELETE FROM GiftSets WHERE GiftSetID = ?";
+		String sql = "UPDATE GiftSets SET flag = 0 WHERE GiftSetID = ?";
 		try (Connection conn = MySQLconn.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, g.getGiftSetID());
 			int count = pstmt.executeUpdate();
@@ -124,7 +149,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
 	@Override
 	public GiftSet searchbyID(Integer GiftSetID) {
-		String sql = "SELECT * FROM GiftSets WHERE GiftSetID = ?";
+		String sql = "SELECT * FROM GiftSets WHERE GiftSetID = ? AND flag !=0";
 		GiftSet g = new GiftSet();
 		try (Connection conn = MySQLconn.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(sql);) {
@@ -157,7 +182,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
 	@Override
 	public ArrayList<GiftSet> showAll() {
-		String sql = "SELECT * FROM GiftSets ORDER BY GiftSetID";
+		String sql = "SELECT * FROM GiftSets WHERE flag !=0 ORDER BY GiftSetID";
 		ArrayList<GiftSet> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				Statement stmt = conn.createStatement(); 
@@ -184,7 +209,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
     @Override
     public ArrayList<GiftSet> getRange(int offset, int count) {
-        String sql = "SELECT * FROM GiftSets ORDER BY GiftSetID LIMIT ?,?";
+        String sql = "SELECT * FROM GiftSets WHERE flag !=0 ORDER BY GiftSetID LIMIT ?,?";
 		ArrayList<GiftSet> al = new ArrayList<>();
 		try (Connection conn = MySQLconn.getConnection(); 
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -213,7 +238,7 @@ public class GiftSetDAOimpl implements GiftSetDAO{
 
     @Override
     public int getSize() {
-        String sql = "SELECT count(*) FROM GiftSets";
+        String sql = "SELECT count(*) FROM GiftSets WHERE flag !=0";
 			try (Connection conn = MySQLconn.getConnection(); 
 					Statement stmt = conn.createStatement();
 					ResultSet rs = stmt.executeQuery(sql)) {
